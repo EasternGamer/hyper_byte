@@ -1,0 +1,27 @@
+[package]
+name = "hyper_byte"
+version = "0.1.0"
+license = "MIT"
+authors = ["EasternGamer"]
+edition = "2021"
+description = "An unsafe, near-zero cost (1-2 instructions) byte transmuter to numeric types"
+keywords = ["unsafe", "byte", "convert", "numeric"]
+repository = "https://github.com/EasternGamer/hyper_byte"
+readme = "README.md"
+exclude = [
+    ".idea/*"
+]
+
+[profile.release]
+opt-level = 3
+overflow-checks = false
+lto = true
+codegen-units = 1
+debug = true
+
+[dependencies]
+half = { version = "2.4.1", optional = true }
+
+[dev-dependencies]
+pretty_assertions = "1.4.1"
+half = "2.4.1"
