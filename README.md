@@ -1,5 +1,6 @@
 # Hyper Byte
 An unsafe byte slice transmuter for Rust's numeric types, for all three endianness'.<br/>
+Additionally included is a simple-to-use byte reader.<br/>
 **Supported types:**
 * `u8`
 * `u16`
