@@ -1,3 +1,5 @@
+pub mod reader;
+
 #[cfg(feature = "half")]
 use half::f16;
 
@@ -97,7 +99,6 @@ pub unsafe fn read_u32_be(bytes: &[u8]) -> u32 {
     unsafe { u32::from_be_bytes(*(bytes.as_ptr() as *const [u8; 4])) }
 }
 
-
 /// Unsafe, near zero cost transmutation of a byte array slice into an unsigned 64-bit integer using big-endianness.<br/>
 /// # Safety
 /// To make it "safe" and does not cause memory errors, you must ensure the input has at least 8 bytes prior to calling this.
@@ -130,7 +131,6 @@ pub unsafe fn read_u64_be(bytes: &[u8]) -> u64 {
     unsafe { u64::from_be_bytes(*(bytes.as_ptr() as *const [u8; 8])) }
 }
 
-
 /// Unsafe, near zero cost transmutation of a byte array slice into an unsigned 128-bit integer using big-endianness.<br/>
 /// # Safety
 /// To make it "safe" and does not cause memory errors, you must ensure the input has at least 16 bytes prior to calling this.
@@ -162,7 +162,6 @@ pub unsafe fn read_u64_be(bytes: &[u8]) -> u64 {
 pub unsafe fn read_u128_be(bytes: &[u8]) -> u128 {
     unsafe { u128::from_be_bytes(*(bytes.as_ptr() as *const [u8; 16])) }
 }
-
 
 /// Unsafe, near zero cost transmutation of a byte array slice into an usize integer using big-endianness.<br/>
 /// # Safety
@@ -354,6 +353,38 @@ pub unsafe fn read_i64_be(bytes: &[u8]) -> i64 {
 #[inline(always)]
 pub unsafe fn read_i128_be(bytes: &[u8]) -> i128 {
     unsafe { i128::from_be_bytes(*(bytes.as_ptr() as *const [u8; 16])) }
+}
+
+/// Unsafe, near zero cost transmutation of a byte array slice into an isize integer using big-endianness.<br/>
+/// # Safety
+/// To make it "safe" and does not cause memory errors, you must ensure the input has at least isize'd bytes prior to calling this.
+/// # Arguments
+/// * `bytes`: the byte array reference
+///
+/// returns: `isize`
+///
+/// # Examples
+/// ```
+/// use hyper_byte::read_isize_be;
+///
+/// let slice = [0u8; 16];
+/// // PERFECTLY SAFE
+/// let first_value = unsafe { read_isize_be(&slice[0..size_of::<isize>()]) };
+/// // NOT SAFE
+/// let second_value = unsafe { read_isize_be(&slice[9..9]) };
+///
+///
+/// pub fn read_isize_safe_be(array: &[u8], index: &mut usize) -> isize {
+///     // "SAFE" because even if the array is not of this length,
+///     // it will still at least panic and not cause undefined behaviour
+///     let third_value = unsafe { read_isize_be(&array[*index..(*index+size_of::<isize>())]) };
+///     *index += size_of::<isize>();
+///     third_value
+/// }
+/// ```
+#[inline(always)]
+pub unsafe fn read_isize_be(bytes: &[u8]) -> isize {
+    unsafe { isize::from_be_bytes(*(bytes.as_ptr() as *const [u8; size_of::<isize>()])) }
 }
 
 #[cfg(feature = "half")]
@@ -550,7 +581,6 @@ pub unsafe fn read_u32_le(bytes: &[u8]) -> u32 {
     unsafe { u32::from_le_bytes(*(bytes.as_ptr() as *const [u8; 4])) }
 }
 
-
 /// Unsafe, near zero cost transmutation of a byte array slice into an unsigned 64-bit integer using little-endianness.<br/>
 /// # Safety
 /// To make it "safe" and does not cause memory errors, you must ensure the input has at least 8 bytes prior to calling this.
@@ -583,7 +613,6 @@ pub unsafe fn read_u64_le(bytes: &[u8]) -> u64 {
     unsafe { u64::from_le_bytes(*(bytes.as_ptr() as *const [u8; 8])) }
 }
 
-
 /// Unsafe, near zero cost transmutation of a byte array slice into an unsigned 128-bit integer using little-endianness.<br/>
 /// # Safety
 /// To make it "safe" and does not cause memory errors, you must ensure the input has at least 16 bytes prior to calling this.
@@ -615,7 +644,6 @@ pub unsafe fn read_u64_le(bytes: &[u8]) -> u64 {
 pub unsafe fn read_u128_le(bytes: &[u8]) -> u128 {
     unsafe { u128::from_le_bytes(*(bytes.as_ptr() as *const [u8; 16])) }
 }
-
 
 /// Unsafe, near zero cost transmutation of a byte array slice into an usize integer using little-endianness.<br/>
 /// # Safety
@@ -809,6 +837,38 @@ pub unsafe fn read_i128_le(bytes: &[u8]) -> i128 {
     unsafe { i128::from_le_bytes(*(bytes.as_ptr() as *const [u8; 16])) }
 }
 
+/// Unsafe, near zero cost transmutation of a byte array slice into an isize integer using little-endianness.<br/>
+/// # Safety
+/// To make it "safe" and does not cause memory errors, you must ensure the input has at least isize'd bytes prior to calling this.
+/// # Arguments
+/// * `bytes`: the byte array reference
+///
+/// returns: `isize`
+///
+/// # Examples
+/// ```
+/// use hyper_byte::read_isize_le;
+///
+/// let slice = [0u8; 16];
+/// // PERFECTLY SAFE
+/// let first_value = unsafe { read_isize_le(&slice[0..size_of::<isize>()]) };
+/// // NOT SAFE
+/// let second_value = unsafe { read_isize_le(&slice[9..9]) };
+///
+///
+/// pub fn read_isize_safe_be(array: &[u8], index: &mut usize) -> isize {
+///     // "SAFE" because even if the array is not of this length,
+///     // it will still at least panic and not cause undefined behaviour
+///     let third_value = unsafe { read_isize_le(&array[*index..(*index+size_of::<isize>())]) };
+///     *index += size_of::<isize>();
+///     third_value
+/// }
+/// ```
+#[inline(always)]
+pub unsafe fn read_isize_le(bytes: &[u8]) -> isize {
+    unsafe { isize::from_le_bytes(*(bytes.as_ptr() as *const [u8; size_of::<isize>()])) }
+}
+
 #[cfg(feature = "half")]
 /// Unsafe, near zero cost transmutation of a byte array slice into a 16-bit floating point using little-endianness.<br/>
 /// # Safety
@@ -907,7 +967,6 @@ pub unsafe fn read_f64_le(bytes: &[u8]) -> f64 {
     unsafe { f64::from_le_bytes(*(bytes.as_ptr() as *const [u8; 8])) }
 }
 
-
 /// Unsafe, near zero cost transmutation of a byte array slice into an unsigned 8-bit integer using little-endianness.
 /// # Safety
 /// To make it safe and does not cause memory errors, you must ensure the input has at least 1 byte prior to calling this.
@@ -1004,7 +1063,6 @@ pub unsafe fn read_u32_ne(bytes: &[u8]) -> u32 {
     unsafe { u32::from_ne_bytes(*(bytes.as_ptr() as *const [u8; 4])) }
 }
 
-
 /// Unsafe, near zero cost transmutation of a byte array slice into an unsigned 64-bit integer using little-endianness.<br/>
 /// # Safety
 /// To make it "safe" and does not cause memory errors, you must ensure the input has at least 8 bytes prior to calling this.
@@ -1037,7 +1095,6 @@ pub unsafe fn read_u64_ne(bytes: &[u8]) -> u64 {
     unsafe { u64::from_ne_bytes(*(bytes.as_ptr() as *const [u8; 8])) }
 }
 
-
 /// Unsafe, near zero cost transmutation of a byte array slice into an unsigned 128-bit integer using little-endianness.<br/>
 /// # Safety
 /// To make it "safe" and does not cause memory errors, you must ensure the input has at least 16 bytes prior to calling this.
@@ -1069,7 +1126,6 @@ pub unsafe fn read_u64_ne(bytes: &[u8]) -> u64 {
 pub unsafe fn read_u128_ne(bytes: &[u8]) -> u128 {
     unsafe { u128::from_ne_bytes(*(bytes.as_ptr() as *const [u8; 16])) }
 }
-
 
 /// Unsafe, near zero cost transmutation of a byte array slice into an usize integer using little-endianness.<br/>
 /// # Safety
@@ -1263,6 +1319,38 @@ pub unsafe fn read_i128_ne(bytes: &[u8]) -> i128 {
     unsafe { i128::from_ne_bytes(*(bytes.as_ptr() as *const [u8; 16])) }
 }
 
+/// Unsafe, near zero cost transmutation of a byte array slice into an isize integer using native-endianness.<br/>
+/// # Safety
+/// To make it "safe" and does not cause memory errors, you must ensure the input has at least isize'd bytes prior to calling this.
+/// # Arguments
+/// * `bytes`: the byte array reference
+///
+/// returns: `isize`
+///
+/// # Examples
+/// ```
+/// use hyper_byte::read_isize_ne;
+///
+/// let slice = [0u8; 16];
+/// // PERFECTLY SAFE
+/// let first_value = unsafe { read_isize_ne(&slice[0..size_of::<isize>()]) };
+/// // NOT SAFE
+/// let second_value = unsafe { read_isize_ne(&slice[9..9]) };
+///
+///
+/// pub fn read_isize_safe_be(array: &[u8], index: &mut usize) -> isize {
+///     // "SAFE" because even if the array is not of this length,
+///     // it will still at least panic and not cause undefined behaviour
+///     let third_value = unsafe { read_isize_ne(&array[*index..(*index+size_of::<isize>())]) };
+///     *index += size_of::<isize>();
+///     third_value
+/// }
+/// ```
+#[inline(always)]
+pub unsafe fn read_isize_ne(bytes: &[u8]) -> isize {
+    unsafe { isize::from_ne_bytes(*(bytes.as_ptr() as *const [u8; size_of::<isize>()])) }
+}
+
 #[cfg(feature = "half")]
 /// Unsafe, near zero cost transmutation of a byte array slice into a 16-bit floating point using little-endianness.<br/>
 /// # Safety
@@ -1363,8 +1451,11 @@ pub unsafe fn read_f64_ne(bytes: &[u8]) -> f64 {
 
 #[cfg(test)]
 mod tests {
-    use half::f16;
+    use super::reader;
     use super::*;
+    use half::f16;
+    use std::hint;
+    use std::time::Instant;
 
     // Required to actually be able to test these functions
     #[inline(always)]
@@ -1381,7 +1472,40 @@ mod tests {
     pub unsafe fn read_f16_ne(bytes: &[u8]) -> f16 {
         unsafe { f16::from_ne_bytes(*(bytes.as_ptr() as *const [u8; 2])) }
     }
+
+    pub fn reader_read_f16_be(array : &[u8], index: &mut usize) -> f16 {
+        let current_index = *index;
+        let new_index = current_index + size_of::<f16>();
+        let ranged_array = &array[current_index..new_index];
+        *index = new_index;
+        // SAFETY: Ranged array will not allow this function to proceed to unsafe code if there aren't enough bytes to read
+        unsafe {
+            read_f16_be(ranged_array)
+        }
+    }
     
+    pub fn reader_read_f16_le(array : &[u8], index: &mut usize) -> f16 {
+        let current_index = *index;
+        let new_index = current_index + size_of::<f16>();
+        let ranged_array = &array[current_index..new_index];
+        *index = new_index;
+        // SAFETY: Ranged array will not allow this function to proceed to unsafe code if there aren't enough bytes to read
+        unsafe {
+            read_f16_le(ranged_array)
+        }
+    }
+    
+    pub fn reader_read_f16_ne(array : &[u8], index: &mut usize) -> f16 {
+        let current_index = *index;
+        let new_index = current_index + size_of::<f16>();
+        let ranged_array = &array[current_index..new_index];
+        *index = new_index;
+        // SAFETY: Ranged array will not allow this function to proceed to unsafe code if there aren't enough bytes to read
+        unsafe {
+            read_f16_ne(ranged_array)
+        }
+    }
+
     #[test]
     fn test_signed_integers_be() {
         let int8 = 12i8;
@@ -1389,26 +1513,49 @@ mod tests {
         let int32 = 192i32;
         let int64 = 192932i64;
         let int128 = 19249462i128;
+        let int_size = 1932387283747isize;
 
         let int8_array = int8.to_be_bytes();
         let int8_result = unsafe { read_i8_be(&int8_array) };
-        assert_eq!(int8, int8_result, "Converting from i8 (big-endian) byte array results in the same i8 value");
+        assert_eq!(
+            int8, int8_result,
+            "Converting from i8 (big-endian) byte array results in the same i8 value"
+        );
 
         let int16_array = int16.to_be_bytes();
         let int16_result = unsafe { read_i16_be(&int16_array) };
-        assert_eq!(int16, int16_result, "Converting from i16 (big-endian) byte array results in the same i16 value");
+        assert_eq!(
+            int16, int16_result,
+            "Converting from i16 (big-endian) byte array results in the same i16 value"
+        );
 
         let int32_array = int32.to_be_bytes();
         let int32_result = unsafe { read_i32_be(&int32_array) };
-        assert_eq!(int32, int32_result, "Converting from i32 (big-endian) byte array results in the same i32 value");
+        assert_eq!(
+            int32, int32_result,
+            "Converting from i32 (big-endian) byte array results in the same i32 value"
+        );
 
         let int64_array = int64.to_be_bytes();
         let int64_result = unsafe { read_i64_be(&int64_array) };
-        assert_eq!(int64, int64_result, "Converting from i64 (big-endian) byte array results in the same i64 value");
+        assert_eq!(
+            int64, int64_result,
+            "Converting from i64 (big-endian) byte array results in the same i64 value"
+        );
 
         let int128_array = int128.to_be_bytes();
         let int128_result = unsafe { read_i128_be(&int128_array) };
-        assert_eq!(int128, int128_result, "Converting from i128 (big-endian) byte array results in the same i128 value");
+        assert_eq!(
+            int128, int128_result,
+            "Converting from i128 (big-endian) byte array results in the same i128 value"
+        );
+
+        let int_size_array = int_size.to_be_bytes();
+        let int_size_result = unsafe { read_isize_be(&int_size_array) };
+        assert_eq!(
+            int_size, int_size_result,
+            "Converting from isize (big-endian) byte array results in the same isize value"
+        );
     }
 
     #[test]
@@ -1418,26 +1565,49 @@ mod tests {
         let int32 = 192i32;
         let int64 = 192932i64;
         let int128 = 19249462i128;
+        let int_size = 1932387283747isize;
 
         let int8_array = int8.to_le_bytes();
         let int8_result = unsafe { read_i8_le(&int8_array) };
-        assert_eq!(int8, int8_result, "Converting from i8 (little-endian) byte array results in the same i8 value");
+        assert_eq!(
+            int8, int8_result,
+            "Converting from i8 (little-endian) byte array results in the same i8 value"
+        );
 
         let int16_array = int16.to_le_bytes();
         let int16_result = unsafe { read_i16_le(&int16_array) };
-        assert_eq!(int16, int16_result, "Converting from i16 (little-endian) byte array results in the same i16 value");
+        assert_eq!(
+            int16, int16_result,
+            "Converting from i16 (little-endian) byte array results in the same i16 value"
+        );
 
         let int32_array = int32.to_le_bytes();
         let int32_result = unsafe { read_i32_le(&int32_array) };
-        assert_eq!(int32, int32_result, "Converting from i32 (little-endian) byte array results in the same i32 value");
+        assert_eq!(
+            int32, int32_result,
+            "Converting from i32 (little-endian) byte array results in the same i32 value"
+        );
 
         let int64_array = int64.to_le_bytes();
         let int64_result = unsafe { read_i64_le(&int64_array) };
-        assert_eq!(int64, int64_result, "Converting from i64 (little-endian) byte array results in the same i64 value");
+        assert_eq!(
+            int64, int64_result,
+            "Converting from i64 (little-endian) byte array results in the same i64 value"
+        );
 
         let int128_array = int128.to_le_bytes();
         let int128_result = unsafe { read_i128_le(&int128_array) };
-        assert_eq!(int128, int128_result, "Converting from i128 (little-endian) byte array results in the same i128 value");
+        assert_eq!(
+            int128, int128_result,
+            "Converting from i128 (little-endian) byte array results in the same i128 value"
+        );
+
+        let int_size_array = int_size.to_le_bytes();
+        let int_size_result = unsafe { read_isize_le(&int_size_array) };
+        assert_eq!(
+            int_size, int_size_result,
+            "Converting from isize (little-endian) byte array results in the same isize value"
+        );
     }
 
     #[test]
@@ -1447,26 +1617,49 @@ mod tests {
         let int32 = 192i32;
         let int64 = 192932i64;
         let int128 = 19249462i128;
+        let int_size = 1932387283747isize;
 
         let int8_array = int8.to_ne_bytes();
         let int8_result = unsafe { read_i8_ne(&int8_array) };
-        assert_eq!(int8, int8_result, "Converting from i8 (little-endian) byte array results in the same i8 value");
+        assert_eq!(
+            int8, int8_result,
+            "Converting from i8 (native-endian) byte array results in the same i8 value"
+        );
 
         let int16_array = int16.to_ne_bytes();
         let int16_result = unsafe { read_i16_ne(&int16_array) };
-        assert_eq!(int16, int16_result, "Converting from i16 (little-endian) byte array results in the same i16 value");
+        assert_eq!(
+            int16, int16_result,
+            "Converting from i16 (native-endian) byte array results in the same i16 value"
+        );
 
         let int32_array = int32.to_ne_bytes();
         let int32_result = unsafe { read_i32_ne(&int32_array) };
-        assert_eq!(int32, int32_result, "Converting from i32 (little-endian) byte array results in the same i32 value");
+        assert_eq!(
+            int32, int32_result,
+            "Converting from i32 (native-endian) byte array results in the same i32 value"
+        );
 
         let int64_array = int64.to_ne_bytes();
         let int64_result = unsafe { read_i64_ne(&int64_array) };
-        assert_eq!(int64, int64_result, "Converting from i64 (little-endian) byte array results in the same i64 value");
+        assert_eq!(
+            int64, int64_result,
+            "Converting from i64 (native-endian) byte array results in the same i64 value"
+        );
 
         let int128_array = int128.to_ne_bytes();
         let int128_result = unsafe { read_i128_ne(&int128_array) };
-        assert_eq!(int128, int128_result, "Converting from i128 (little-endian) byte array results in the same i128 value");
+        assert_eq!(
+            int128, int128_result,
+            "Converting from i128 (native-endian) byte array results in the same i128 value"
+        );
+
+        let int_size_array = int_size.to_ne_bytes();
+        let int_size_result = unsafe { read_isize_ne(&int_size_array) };
+        assert_eq!(
+            int_size, int_size_result,
+            "Converting from isize (native-endian) byte array results in the same isize value"
+        );
     }
 
     #[test]
@@ -1476,26 +1669,49 @@ mod tests {
         let int32 = 192u32;
         let int64 = 192932u64;
         let int128 = 19249462u128;
+        let int_size = 1932387283747usize;
 
         let int8_array = int8.to_be_bytes();
         let int8_result = unsafe { read_u8_be(&int8_array) };
-        assert_eq!(int8, int8_result, "Converting from u8 (big-endian) byte array results in the same u8 value");
+        assert_eq!(
+            int8, int8_result,
+            "Converting from u8 (big-endian) byte array results in the same u8 value"
+        );
 
         let int16_array = int16.to_be_bytes();
         let int16_result = unsafe { read_u16_be(&int16_array) };
-        assert_eq!(int16, int16_result, "Converting from u16 (big-endian) byte array results in the same u16 value");
+        assert_eq!(
+            int16, int16_result,
+            "Converting from u16 (big-endian) byte array results in the same u16 value"
+        );
 
         let int32_array = int32.to_be_bytes();
         let int32_result = unsafe { read_u32_be(&int32_array) };
-        assert_eq!(int32, int32_result, "Converting from u32 (big-endian) byte array results in the same u32 value");
+        assert_eq!(
+            int32, int32_result,
+            "Converting from u32 (big-endian) byte array results in the same u32 value"
+        );
 
         let int64_array = int64.to_be_bytes();
         let int64_result = unsafe { read_u64_be(&int64_array) };
-        assert_eq!(int64, int64_result, "Converting from u64 (big-endian) byte array results in the same u64 value");
+        assert_eq!(
+            int64, int64_result,
+            "Converting from u64 (big-endian) byte array results in the same u64 value"
+        );
 
         let int128_array = int128.to_be_bytes();
         let int128_result = unsafe { read_u128_be(&int128_array) };
-        assert_eq!(int128, int128_result, "Converting from u128 (big-endian) byte array results in the same u128 value");
+        assert_eq!(
+            int128, int128_result,
+            "Converting from u128 (big-endian) byte array results in the same u128 value"
+        );
+
+        let int_size_array = int_size.to_be_bytes();
+        let int_size_result = unsafe { read_usize_be(&int_size_array) };
+        assert_eq!(
+            int_size, int_size_result,
+            "Converting from usize (big-endian) byte array results in the same usize value"
+        );
     }
 
     #[test]
@@ -1505,26 +1721,49 @@ mod tests {
         let int32 = 192u32;
         let int64 = 192932u64;
         let int128 = 19249462u128;
+        let int_size = 1932387283747usize;
 
         let int8_array = int8.to_le_bytes();
         let int8_result = unsafe { read_u8_le(&int8_array) };
-        assert_eq!(int8, int8_result, "Converting from u8 (little-endian) byte array results in the same u8 value");
+        assert_eq!(
+            int8, int8_result,
+            "Converting from u8 (little-endian) byte array results in the same u8 value"
+        );
 
         let int16_array = int16.to_le_bytes();
         let int16_result = unsafe { read_u16_le(&int16_array) };
-        assert_eq!(int16, int16_result, "Converting from u16 (little-endian) byte array results in the same u16 value");
+        assert_eq!(
+            int16, int16_result,
+            "Converting from u16 (little-endian) byte array results in the same u16 value"
+        );
 
         let int32_array = int32.to_le_bytes();
         let int32_result = unsafe { read_u32_le(&int32_array) };
-        assert_eq!(int32, int32_result, "Converting from u32 (little-endian) byte array results in the same u32 value");
+        assert_eq!(
+            int32, int32_result,
+            "Converting from u32 (little-endian) byte array results in the same u32 value"
+        );
 
         let int64_array = int64.to_le_bytes();
         let int64_result = unsafe { read_u64_le(&int64_array) };
-        assert_eq!(int64, int64_result, "Converting from u64 (little-endian) byte array results in the same u64 value");
+        assert_eq!(
+            int64, int64_result,
+            "Converting from u64 (little-endian) byte array results in the same u64 value"
+        );
 
         let int128_array = int128.to_le_bytes();
         let int128_result = unsafe { read_u128_le(&int128_array) };
-        assert_eq!(int128, int128_result, "Converting from u128 (little-endian) byte array results in the same u128 value");
+        assert_eq!(
+            int128, int128_result,
+            "Converting from u128 (little-endian) byte array results in the same u128 value"
+        );
+
+        let int_size_array = int_size.to_ne_bytes();
+        let int_size_result = unsafe { read_usize_le(&int_size_array) };
+        assert_eq!(
+            int_size, int_size_result,
+            "Converting from usize (little-endian) byte array results in the same usize value"
+        );
     }
 
     #[test]
@@ -1534,52 +1773,84 @@ mod tests {
         let int32 = 192u32;
         let int64 = 192932u64;
         let int128 = 19249462u128;
+        let int_size = 1932387283747usize;
 
         let int8_array = int8.to_ne_bytes();
         let int8_result = unsafe { read_u8_ne(&int8_array) };
-        assert_eq!(int8, int8_result, "Converting from u8 (native-endian) byte array results in the same u8 value");
+        assert_eq!(
+            int8, int8_result,
+            "Converting from u8 (native-endian) byte array results in the same u8 value"
+        );
 
         let int16_array = int16.to_ne_bytes();
         let int16_result = unsafe { read_u16_ne(&int16_array) };
-        assert_eq!(int16, int16_result, "Converting from u16 (native-endian) byte array results in the same u16 value");
+        assert_eq!(
+            int16, int16_result,
+            "Converting from u16 (native-endian) byte array results in the same u16 value"
+        );
 
         let int32_array = int32.to_ne_bytes();
         let int32_result = unsafe { read_u32_ne(&int32_array) };
-        assert_eq!(int32, int32_result, "Converting from u32 (native-endian) byte array results in the same u32 value");
+        assert_eq!(
+            int32, int32_result,
+            "Converting from u32 (native-endian) byte array results in the same u32 value"
+        );
 
         let int64_array = int64.to_ne_bytes();
         let int64_result = unsafe { read_u64_ne(&int64_array) };
-        assert_eq!(int64, int64_result, "Converting from u64 (native-endian) byte array results in the same u64 value");
+        assert_eq!(
+            int64, int64_result,
+            "Converting from u64 (native-endian) byte array results in the same u64 value"
+        );
 
         let int128_array = int128.to_ne_bytes();
         let int128_result = unsafe { read_u128_ne(&int128_array) };
-        assert_eq!(int128, int128_result, "Converting from u128 (native-endian) byte array results in the same u128 value");
+        assert_eq!(
+            int128, int128_result,
+            "Converting from u128 (native-endian) byte array results in the same u128 value"
+        );
+
+        let int_size_array = int_size.to_ne_bytes();
+        let int_size_result = unsafe { read_usize_ne(&int_size_array) };
+        assert_eq!(
+            int_size, int_size_result,
+            "Converting from usize (native-endian) byte array results in the same usize value"
+        );
     }
 
     #[test]
     fn test_half_be() {
-        let float16 : f16 = f16::from_f32_const(10f32);
+        let float16: f16 = f16::from_f32_const(10f32);
         let float16_array = float16.to_be_bytes();
         let float16_result = unsafe { read_f16_be(&float16_array) };
-        assert_eq!(float16, float16_result, "Converting from f16 (big-endian) byte array results in the same f16 value");
+        assert_eq!(
+            float16, float16_result,
+            "Converting from f16 (big-endian) byte array results in the same f16 value"
+        );
     }
 
     #[test]
     fn test_half_le() {
-        let float16 : f16 = f16::from_f32_const(10f32);
+        let float16: f16 = f16::from_f32_const(10f32);
         let float16_array = float16.to_le_bytes();
         let float16_result = unsafe { read_f16_le(&float16_array) };
-        assert_eq!(float16, float16_result, "Converting from f16 (little-endian) byte array results in the same f16 value");
+        assert_eq!(
+            float16, float16_result,
+            "Converting from f16 (little-endian) byte array results in the same f16 value"
+        );
     }
 
     #[test]
     fn test_half_ne() {
-        let float16 : f16 = f16::from_f32_const(10f32);
+        let float16: f16 = f16::from_f32_const(10f32);
         let float16_array = float16.to_ne_bytes();
         let float16_result = unsafe { read_f16_ne(&float16_array) };
-        assert_eq!(float16, float16_result, "Converting from f16 (native-endian) byte array results in the same f16 value");
+        assert_eq!(
+            float16, float16_result,
+            "Converting from f16 (native-endian) byte array results in the same f16 value"
+        );
     }
-    
+
     #[test]
     fn test_floating_points_be() {
         let float32 = 192f32;
@@ -1587,11 +1858,17 @@ mod tests {
 
         let float32_array = float32.to_be_bytes();
         let float32_result = unsafe { read_f32_be(&float32_array) };
-        assert_eq!(float32, float32_result, "Converting from f32 (big-endian) byte array results in the same f32 value");
+        assert_eq!(
+            float32, float32_result,
+            "Converting from f32 (big-endian) byte array results in the same f32 value"
+        );
 
         let float64_array = float64.to_be_bytes();
         let float64_result = unsafe { read_f64_be(&float64_array) };
-        assert_eq!(float64, float64_result, "Converting from f64 (big-endian) byte array results in the same f64 value");
+        assert_eq!(
+            float64, float64_result,
+            "Converting from f64 (big-endian) byte array results in the same f64 value"
+        );
     }
 
     #[test]
@@ -1601,11 +1878,17 @@ mod tests {
 
         let float32_array = float32.to_le_bytes();
         let float32_result = unsafe { read_f32_le(&float32_array) };
-        assert_eq!(float32, float32_result, "Converting from f32 (little-endian) byte array results in the same f32 value");
+        assert_eq!(
+            float32, float32_result,
+            "Converting from f32 (little-endian) byte array results in the same f32 value"
+        );
 
         let float64_array = float64.to_le_bytes();
         let float64_result = unsafe { read_f64_le(&float64_array) };
-        assert_eq!(float64, float64_result, "Converting from f64 (little-endian) byte array results in the same f64 value");
+        assert_eq!(
+            float64, float64_result,
+            "Converting from f64 (little-endian) byte array results in the same f64 value"
+        );
     }
 
     #[test]
@@ -1615,11 +1898,388 @@ mod tests {
 
         let float32_array = float32.to_ne_bytes();
         let float32_result = unsafe { read_f32_ne(&float32_array) };
-        assert_eq!(float32, float32_result, "Converting from f32 (native-endian) byte array results in the same f32 value");
+        assert_eq!(
+            float32, float32_result,
+            "Converting from f32 (native-endian) byte array results in the same f32 value"
+        );
 
         let float64_array = float64.to_ne_bytes();
         let float64_result = unsafe { read_f64_ne(&float64_array) };
-        assert_eq!(float64, float64_result, "Converting from f64 (native-endian) byte array results in the same f64 value");
+        assert_eq!(
+            float64, float64_result,
+            "Converting from f64 (native-endian) byte array results in the same f64 value"
+        );
+    }
+
+    #[derive(PartialOrd, PartialEq, Debug)]
+    struct MyTestStruct {
+        unsigned8: u8,
+        unsigned16: u16,
+        unsigned32: u32,
+        unsigned64: u64,
+        unsigned128: u128,
+        unsigned_size: usize,
+        signed8: i8,
+        signed16: i16,
+        signed32: i32,
+        signed64: i64,
+        signed128: i128,
+        signed_size: isize,
+        float16: f16,
+        float32: f32,
+        float64: f64,
+    }
+
+    impl Default for MyTestStruct {
+        fn default() -> Self {
+            Self {
+                unsigned8: 220,
+                unsigned16: 1034,
+                unsigned32: 3,
+                unsigned64: 293454,
+                unsigned128: 13298439298,
+                unsigned_size: 118283,
+                signed8: 126,
+                signed16: 193,
+                signed32: 544,
+                signed64: 353,
+                signed128: 546755,
+                signed_size: 43818,
+                float16: f16::from_f32_const(93.21),
+                float32: 38.358482,
+                float64: 32848.23488,
+            }
+        }
     }
     
+    impl MyTestStruct {
+        pub fn to_be_bytes(&self) -> Vec<u8> {
+            let mut bytes = Vec::new();
+
+            self.unsigned8
+                .to_be_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.unsigned16
+                .to_be_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.unsigned32
+                .to_be_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.unsigned64
+                .to_be_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.unsigned128
+                .to_be_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.unsigned_size
+                .to_be_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+
+            self.signed8
+                .to_be_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.signed16
+                .to_be_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.signed32
+                .to_be_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.signed64
+                .to_be_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.signed128
+                .to_be_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.signed_size
+                .to_be_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+
+            self.float16
+                .to_be_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.float32
+                .to_be_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.float64
+                .to_be_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            bytes
+        }
+
+        pub fn to_le_bytes(&self) -> Vec<u8> {
+            let mut bytes = Vec::new();
+
+            self.unsigned8
+                .to_le_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.unsigned16
+                .to_le_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.unsigned32
+                .to_le_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.unsigned64
+                .to_le_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.unsigned128
+                .to_le_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.unsigned_size
+                .to_le_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+
+            self.signed8
+                .to_le_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.signed16
+                .to_le_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.signed32
+                .to_le_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.signed64
+                .to_le_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.signed128
+                .to_le_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.signed_size
+                .to_le_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+
+            self.float16
+                .to_le_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.float32
+                .to_le_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.float64
+                .to_le_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            bytes
+        }
+
+        pub fn to_ne_bytes(&self) -> Vec<u8> {
+            let mut bytes = Vec::new();
+
+            self.unsigned8
+                .to_ne_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.unsigned16
+                .to_ne_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.unsigned32
+                .to_ne_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.unsigned64
+                .to_ne_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.unsigned128
+                .to_ne_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.unsigned_size
+                .to_ne_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+
+            self.signed8
+                .to_ne_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.signed16
+                .to_ne_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.signed32
+                .to_ne_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.signed64
+                .to_ne_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.signed128
+                .to_ne_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.signed_size
+                .to_ne_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+
+            self.float16
+                .to_ne_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.float32
+                .to_ne_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            self.float64
+                .to_ne_bytes()
+                .into_iter()
+                .for_each(|x| bytes.push(x));
+            bytes
+        }
+    }
+
+    #[test]
+    fn reader_be() {
+        let my_struct = MyTestStruct::default();
+        let vector_data = my_struct.to_be_bytes();
+        let mut index = 0;
+        let parsed_struct = MyTestStruct {
+            unsigned8: reader::read_u8_be(&vector_data, &mut index),
+            unsigned16: reader::read_u16_be(&vector_data, &mut index),
+            unsigned32: reader::read_u32_be(&vector_data, &mut index),
+            unsigned64: reader::read_u64_be(&vector_data, &mut index),
+            unsigned128: reader::read_u128_be(&vector_data, &mut index),
+            unsigned_size: reader::read_usize_be(&vector_data, &mut index),
+            signed8: reader::read_i8_be(&vector_data, &mut index),
+            signed16: reader::read_i16_be(&vector_data, &mut index),
+            signed32: reader::read_i32_be(&vector_data, &mut index),
+            signed64: reader::read_i64_be(&vector_data, &mut index),
+            signed128: reader::read_i128_be(&vector_data, &mut index),
+            signed_size: reader::read_isize_be(&vector_data, &mut index),
+            float16: reader_read_f16_be(&vector_data, &mut index),
+            float32: reader::read_f32_be(&vector_data, &mut index),
+            float64: reader::read_f64_be(&vector_data, &mut index),
+        };
+
+        assert_eq!(parsed_struct, my_struct, "Converting using Big Endian Reader");
+    }
+    
+    #[test]
+    fn reader_le() {
+        let my_struct = MyTestStruct::default();
+        let vector_data = my_struct.to_le_bytes();
+        let mut index = 0;
+        let parsed_struct = MyTestStruct {
+            unsigned8: reader::read_u8_le(&vector_data, &mut index),
+            unsigned16: reader::read_u16_le(&vector_data, &mut index),
+            unsigned32: reader::read_u32_le(&vector_data, &mut index),
+            unsigned64: reader::read_u64_le(&vector_data, &mut index),
+            unsigned128: reader::read_u128_le(&vector_data, &mut index),
+            unsigned_size: reader::read_usize_le(&vector_data, &mut index),
+            signed8: reader::read_i8_le(&vector_data, &mut index),
+            signed16: reader::read_i16_le(&vector_data, &mut index),
+            signed32: reader::read_i32_le(&vector_data, &mut index),
+            signed64: reader::read_i64_le(&vector_data, &mut index),
+            signed128: reader::read_i128_le(&vector_data, &mut index),
+            signed_size: reader::read_isize_le(&vector_data, &mut index),
+            float16: reader_read_f16_le(&vector_data, &mut index),
+            float32: reader::read_f32_le(&vector_data, &mut index),
+            float64: reader::read_f64_le(&vector_data, &mut index),
+        };
+
+        assert_eq!(parsed_struct, my_struct, "Converting using Little Endian Reader");
+    }
+    
+    #[test]
+    fn reader_ne() {
+        let my_struct = MyTestStruct::default();
+        let vector_data = my_struct.to_ne_bytes();
+        let mut index = 0;
+        let parsed_struct = MyTestStruct {
+            unsigned8: reader::read_u8_ne(&vector_data, &mut index),
+            unsigned16: reader::read_u16_ne(&vector_data, &mut index),
+            unsigned32: reader::read_u32_ne(&vector_data, &mut index),
+            unsigned64: reader::read_u64_ne(&vector_data, &mut index),
+            unsigned128: reader::read_u128_ne(&vector_data, &mut index),
+            unsigned_size: reader::read_usize_ne(&vector_data, &mut index),
+            signed8: reader::read_i8_ne(&vector_data, &mut index),
+            signed16: reader::read_i16_ne(&vector_data, &mut index),
+            signed32: reader::read_i32_ne(&vector_data, &mut index),
+            signed64: reader::read_i64_ne(&vector_data, &mut index),
+            signed128: reader::read_i128_ne(&vector_data, &mut index),
+            signed_size: reader::read_isize_ne(&vector_data, &mut index),
+            float16: reader_read_f16_ne(&vector_data, &mut index),
+            float32: reader::read_f32_ne(&vector_data, &mut index),
+            float64: reader::read_f64_ne(&vector_data, &mut index),
+        };
+
+        assert_eq!(parsed_struct, my_struct, "Converting using Native Endian Reader");
+    }
+
+    // Has bound checks for every indexing operation
+    #[no_mangle]
+    #[inline(always)]
+    pub fn read_f64_ne_indexing(bytes: &[u8]) -> f64 {
+        f64::from_ne_bytes([
+            bytes[0], bytes[1], bytes[2], bytes[3], bytes[4], bytes[5], bytes[6], bytes[7],
+        ])
+    }
+
+    // Has more branching and operations involved, and ultimately
+    #[no_mangle]
+    #[inline(always)]
+    pub fn read_f64_ne_ordinary(bytes: &[u8]) -> f64 {
+        f64::from_ne_bytes(bytes.try_into().expect("Error!"))
+    }
+
+    #[test]
+    fn my_bench_mark() {
+        let my_value = hint::black_box(1000f64);
+        let mut bytes;
+        let mut result = my_value;
+        // Use of blackbox to attempt to prevent release mode from not running the code
+        let start = Instant::now();
+        for _ in 0..1_000_000_000 {
+            bytes = result.to_ne_bytes();
+            result = hint::black_box(unsafe { read_f64_ne(hint::black_box(&bytes)) });
+        }
+        let end = start.elapsed();
+        println!("Fast {result} - {}s", end.as_secs_f64());
+
+        let start = Instant::now();
+        for _ in 0..1_000_000_000 {
+            bytes = result.to_ne_bytes();
+            result = hint::black_box(read_f64_ne_indexing(hint::black_box(&bytes)));
+        }
+        let end = start.elapsed();
+        println!("Indexing: {result} - {}s", end.as_secs_f64());
+
+        let start = Instant::now();
+        for _ in 0..1_000_000_000 {
+            bytes = result.to_ne_bytes();
+            result = hint::black_box(read_f64_ne_ordinary(hint::black_box(&bytes)));
+        }
+        let end = start.elapsed();
+        println!("Ordinary: {result} - {}s", end.as_secs_f64());
+    }
 }
