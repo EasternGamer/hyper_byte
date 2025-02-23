@@ -22,6 +22,8 @@ debug = true
 [dependencies]
 half = { version = "2.4.1", optional = true }
 
+[features]
+half = ["dep:half"]
+
 [dev-dependencies]
-pretty_assertions = "1.4.1"
 half = "2.4.1"

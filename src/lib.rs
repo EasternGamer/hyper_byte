@@ -1363,12 +1363,25 @@ pub unsafe fn read_f64_ne(bytes: &[u8]) -> f64 {
 
 #[cfg(test)]
 mod tests {
-    #[cfg(feature = "half")]
     use half::f16;
-    
-    use pretty_assertions::{assert_eq};
     use super::*;
 
+    // Required to actually be able to test these functions
+    #[inline(always)]
+    pub unsafe fn read_f16_be(bytes: &[u8]) -> f16 {
+        unsafe { f16::from_be_bytes(*(bytes.as_ptr() as *const [u8; 2])) }
+    }
+
+    #[inline(always)]
+    pub unsafe fn read_f16_le(bytes: &[u8]) -> f16 {
+        unsafe { f16::from_le_bytes(*(bytes.as_ptr() as *const [u8; 2])) }
+    }
+
+    #[inline(always)]
+    pub unsafe fn read_f16_ne(bytes: &[u8]) -> f16 {
+        unsafe { f16::from_ne_bytes(*(bytes.as_ptr() as *const [u8; 2])) }
+    }
+    
     #[test]
     fn test_signed_integers_be() {
         let int8 = 12i8;
@@ -1543,7 +1556,6 @@ mod tests {
         assert_eq!(int128, int128_result, "Converting from u128 (native-endian) byte array results in the same u128 value");
     }
 
-    #[cfg(feature = "half")]
     #[test]
     fn test_half_be() {
         let float16 : f16 = f16::from_f32_const(10f32);
@@ -1552,7 +1564,6 @@ mod tests {
         assert_eq!(float16, float16_result, "Converting from f16 (big-endian) byte array results in the same f16 value");
     }
 
-    #[cfg(feature = "half")]
     #[test]
     fn test_half_le() {
         let float16 : f16 = f16::from_f32_const(10f32);
@@ -1561,7 +1572,6 @@ mod tests {
         assert_eq!(float16, float16_result, "Converting from f16 (little-endian) byte array results in the same f16 value");
     }
 
-    #[cfg(feature = "half")]
     #[test]
     fn test_half_ne() {
         let float16 : f16 = f16::from_f32_const(10f32);
