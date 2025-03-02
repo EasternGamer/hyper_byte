@@ -9,7 +9,7 @@ use half::f16;
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `u8`
+/// returns: [`u8`]
 ///
 /// # Examples
 /// ```
@@ -41,7 +41,7 @@ pub unsafe fn read_u8_be(bytes: &[u8]) -> u8 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `u16`
+/// returns: [`u16`]
 ///
 /// # Examples
 /// ```
@@ -73,7 +73,7 @@ pub unsafe fn read_u16_be(bytes: &[u8]) -> u16 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `u32`
+/// returns: [`u32`]
 ///
 /// # Examples
 /// ```
@@ -105,7 +105,7 @@ pub unsafe fn read_u32_be(bytes: &[u8]) -> u32 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `u64`
+/// returns: [`u64`]
 ///
 /// # Examples
 /// ```
@@ -137,7 +137,7 @@ pub unsafe fn read_u64_be(bytes: &[u8]) -> u64 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `u128`
+/// returns: [`u128`]
 ///
 /// # Examples
 /// ```
@@ -169,7 +169,7 @@ pub unsafe fn read_u128_be(bytes: &[u8]) -> u128 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `usize`
+/// returns: [`usize`]
 ///
 /// # Examples
 /// ```
@@ -201,7 +201,7 @@ pub unsafe fn read_usize_be(bytes: &[u8]) -> usize {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `i8`
+/// returns: [`i8`]
 ///
 /// # Examples
 /// ```
@@ -233,7 +233,7 @@ pub unsafe fn read_i8_be(bytes: &[u8]) -> i8 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `i16`
+/// returns: [`i16`]
 ///
 /// # Examples
 /// ```
@@ -265,7 +265,7 @@ pub unsafe fn read_i16_be(bytes: &[u8]) -> i16 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `i32`
+/// returns: [`i32`]
 ///
 /// # Examples
 /// ```
@@ -297,7 +297,7 @@ pub unsafe fn read_i32_be(bytes: &[u8]) -> i32 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `i64`
+/// returns: [`i64`]
 ///
 /// # Examples
 /// ```
@@ -329,7 +329,7 @@ pub unsafe fn read_i64_be(bytes: &[u8]) -> i64 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `i128`
+/// returns: [`i128`]
 ///
 /// # Examples
 /// ```
@@ -361,7 +361,7 @@ pub unsafe fn read_i128_be(bytes: &[u8]) -> i128 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `isize`
+/// returns: [`isize`]
 ///
 /// # Examples
 /// ```
@@ -394,7 +394,7 @@ pub unsafe fn read_isize_be(bytes: &[u8]) -> isize {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `f16`
+/// returns: [`f16`]
 ///
 /// # Examples
 /// ```
@@ -427,7 +427,7 @@ pub unsafe fn read_f16_be(bytes: &[u8]) -> f16 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `f32`
+/// returns: [`f32`]
 ///
 /// # Examples
 /// ```
@@ -459,7 +459,7 @@ pub unsafe fn read_f32_be(bytes: &[u8]) -> f32 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `f64`
+/// returns: [`f64`]
 ///
 /// # Examples
 /// ```
@@ -491,7 +491,7 @@ pub unsafe fn read_f64_be(bytes: &[u8]) -> f64 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `u8`
+/// returns: [`u8`]
 ///
 /// # Examples
 /// ```
@@ -523,7 +523,7 @@ pub unsafe fn read_u8_le(bytes: &[u8]) -> u8 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `u16`
+/// returns: [`u16`]
 ///
 /// # Examples
 /// ```
@@ -555,7 +555,7 @@ pub unsafe fn read_u16_le(bytes: &[u8]) -> u16 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `u32`
+/// returns: [`u32`]
 ///
 /// # Examples
 /// ```
@@ -587,7 +587,7 @@ pub unsafe fn read_u32_le(bytes: &[u8]) -> u32 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `u64`
+/// returns: [`u64`]
 ///
 /// # Examples
 /// ```
@@ -619,7 +619,7 @@ pub unsafe fn read_u64_le(bytes: &[u8]) -> u64 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `u128`
+/// returns: [`u128`]
 ///
 /// # Examples
 /// ```
@@ -651,7 +651,7 @@ pub unsafe fn read_u128_le(bytes: &[u8]) -> u128 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `usize`
+/// returns: [`usize`]
 ///
 /// # Examples
 /// ```
@@ -683,7 +683,7 @@ pub unsafe fn read_usize_le(bytes: &[u8]) -> usize {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `i8`
+/// returns: [`i8`]
 ///
 /// # Examples
 /// ```
@@ -715,7 +715,7 @@ pub unsafe fn read_i8_le(bytes: &[u8]) -> i8 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `i16`
+/// returns: [`i16`]
 ///
 /// # Examples
 /// ```
@@ -747,7 +747,7 @@ pub unsafe fn read_i16_le(bytes: &[u8]) -> i16 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `i32`
+/// returns: [`i32`]
 ///
 /// # Examples
 /// ```
@@ -779,7 +779,7 @@ pub unsafe fn read_i32_le(bytes: &[u8]) -> i32 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `i64`
+/// returns: [`i64`]
 ///
 /// # Examples
 /// ```
@@ -811,7 +811,7 @@ pub unsafe fn read_i64_le(bytes: &[u8]) -> i64 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `i128`
+/// returns: [`i128`]
 ///
 /// # Examples
 /// ```
@@ -843,7 +843,7 @@ pub unsafe fn read_i128_le(bytes: &[u8]) -> i128 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `isize`
+/// returns: [`isize`]
 ///
 /// # Examples
 /// ```
@@ -876,7 +876,7 @@ pub unsafe fn read_isize_le(bytes: &[u8]) -> isize {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `f16`
+/// returns: [`f16`]
 ///
 /// # Examples
 /// ```
@@ -909,7 +909,7 @@ pub unsafe fn read_f16_le(bytes: &[u8]) -> f16 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `f32`
+/// returns: [`f32`]
 ///
 /// # Examples
 /// ```
@@ -941,7 +941,7 @@ pub unsafe fn read_f32_le(bytes: &[u8]) -> f32 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `f64`
+/// returns: [`f64`]
 ///
 /// # Examples
 /// ```
@@ -973,7 +973,7 @@ pub unsafe fn read_f64_le(bytes: &[u8]) -> f64 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `u8`
+/// returns: [`u8`]
 ///
 /// # Examples
 /// ```
@@ -1005,7 +1005,7 @@ pub unsafe fn read_u8_ne(bytes: &[u8]) -> u8 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `u16`
+/// returns: [`u16`]
 ///
 /// # Examples
 /// ```
@@ -1037,7 +1037,7 @@ pub unsafe fn read_u16_ne(bytes: &[u8]) -> u16 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `u32`
+/// returns: [`u32`]
 ///
 /// # Examples
 /// ```
@@ -1069,7 +1069,7 @@ pub unsafe fn read_u32_ne(bytes: &[u8]) -> u32 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `u64`
+/// returns: [`u64`]
 ///
 /// # Examples
 /// ```
@@ -1101,7 +1101,7 @@ pub unsafe fn read_u64_ne(bytes: &[u8]) -> u64 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `u128`
+/// returns: [`u128`]
 ///
 /// # Examples
 /// ```
@@ -1133,7 +1133,7 @@ pub unsafe fn read_u128_ne(bytes: &[u8]) -> u128 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `usize`
+/// returns: [`usize`]
 ///
 /// # Examples
 /// ```
@@ -1165,7 +1165,7 @@ pub unsafe fn read_usize_ne(bytes: &[u8]) -> usize {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `i8`
+/// returns: [`i8`]
 ///
 /// # Examples
 /// ```
@@ -1197,7 +1197,7 @@ pub unsafe fn read_i8_ne(bytes: &[u8]) -> i8 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `i16`
+/// returns: [`i16`]
 ///
 /// # Examples
 /// ```
@@ -1229,7 +1229,7 @@ pub unsafe fn read_i16_ne(bytes: &[u8]) -> i16 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `i32`
+/// returns: [`i32`]
 ///
 /// # Examples
 /// ```
@@ -1261,7 +1261,7 @@ pub unsafe fn read_i32_ne(bytes: &[u8]) -> i32 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `i64`
+/// returns: [`i64`]
 ///
 /// # Examples
 /// ```
@@ -1293,7 +1293,7 @@ pub unsafe fn read_i64_ne(bytes: &[u8]) -> i64 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `i128`
+/// returns: [`i128`]
 ///
 /// # Examples
 /// ```
@@ -1325,7 +1325,7 @@ pub unsafe fn read_i128_ne(bytes: &[u8]) -> i128 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `isize`
+/// returns: [`isize`]
 ///
 /// # Examples
 /// ```
@@ -1358,7 +1358,7 @@ pub unsafe fn read_isize_ne(bytes: &[u8]) -> isize {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `f16`
+/// returns: [`f16`]
 ///
 /// # Examples
 /// ```
@@ -1391,7 +1391,7 @@ pub unsafe fn read_f16_ne(bytes: &[u8]) -> f16 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `f32`
+/// returns: [`f32`]
 ///
 /// # Examples
 /// ```
@@ -1423,7 +1423,7 @@ pub unsafe fn read_f32_ne(bytes: &[u8]) -> f32 {
 /// # Arguments
 /// * `bytes`: the byte array reference
 ///
-/// returns: `f64`
+/// returns: [`f64`]
 ///
 /// # Examples
 /// ```
@@ -1452,59 +1452,11 @@ pub unsafe fn read_f64_ne(bytes: &[u8]) -> f64 {
 #[cfg(test)]
 mod tests {
     use super::reader;
+    use super::reader::FastByteReader;
     use super::*;
     use half::f16;
     use std::hint;
     use std::time::Instant;
-
-    // Required to actually be able to test these functions
-    #[inline(always)]
-    pub unsafe fn read_f16_be(bytes: &[u8]) -> f16 {
-        unsafe { f16::from_be_bytes(*(bytes.as_ptr() as *const [u8; 2])) }
-    }
-
-    #[inline(always)]
-    pub unsafe fn read_f16_le(bytes: &[u8]) -> f16 {
-        unsafe { f16::from_le_bytes(*(bytes.as_ptr() as *const [u8; 2])) }
-    }
-
-    #[inline(always)]
-    pub unsafe fn read_f16_ne(bytes: &[u8]) -> f16 {
-        unsafe { f16::from_ne_bytes(*(bytes.as_ptr() as *const [u8; 2])) }
-    }
-
-    pub fn reader_read_f16_be(array : &[u8], index: &mut usize) -> f16 {
-        let current_index = *index;
-        let new_index = current_index + size_of::<f16>();
-        let ranged_array = &array[current_index..new_index];
-        *index = new_index;
-        // SAFETY: Ranged array will not allow this function to proceed to unsafe code if there aren't enough bytes to read
-        unsafe {
-            read_f16_be(ranged_array)
-        }
-    }
-    
-    pub fn reader_read_f16_le(array : &[u8], index: &mut usize) -> f16 {
-        let current_index = *index;
-        let new_index = current_index + size_of::<f16>();
-        let ranged_array = &array[current_index..new_index];
-        *index = new_index;
-        // SAFETY: Ranged array will not allow this function to proceed to unsafe code if there aren't enough bytes to read
-        unsafe {
-            read_f16_le(ranged_array)
-        }
-    }
-    
-    pub fn reader_read_f16_ne(array : &[u8], index: &mut usize) -> f16 {
-        let current_index = *index;
-        let new_index = current_index + size_of::<f16>();
-        let ranged_array = &array[current_index..new_index];
-        *index = new_index;
-        // SAFETY: Ranged array will not allow this function to proceed to unsafe code if there aren't enough bytes to read
-        unsafe {
-            read_f16_ne(ranged_array)
-        }
-    }
 
     #[test]
     fn test_signed_integers_be() {
@@ -2176,7 +2128,7 @@ mod tests {
             signed64: reader::read_i64_be(&vector_data, &mut index),
             signed128: reader::read_i128_be(&vector_data, &mut index),
             signed_size: reader::read_isize_be(&vector_data, &mut index),
-            float16: reader_read_f16_be(&vector_data, &mut index),
+            float16: reader::read_f16_be(&vector_data, &mut index),
             float32: reader::read_f32_be(&vector_data, &mut index),
             float64: reader::read_f64_be(&vector_data, &mut index),
         };
@@ -2202,7 +2154,7 @@ mod tests {
             signed64: reader::read_i64_le(&vector_data, &mut index),
             signed128: reader::read_i128_le(&vector_data, &mut index),
             signed_size: reader::read_isize_le(&vector_data, &mut index),
-            float16: reader_read_f16_le(&vector_data, &mut index),
+            float16: reader::read_f16_le(&vector_data, &mut index),
             float32: reader::read_f32_le(&vector_data, &mut index),
             float64: reader::read_f64_le(&vector_data, &mut index),
         };
@@ -2228,12 +2180,90 @@ mod tests {
             signed64: reader::read_i64_ne(&vector_data, &mut index),
             signed128: reader::read_i128_ne(&vector_data, &mut index),
             signed_size: reader::read_isize_ne(&vector_data, &mut index),
-            float16: reader_read_f16_ne(&vector_data, &mut index),
+            float16: reader::read_f16_ne(&vector_data, &mut index),
             float32: reader::read_f32_ne(&vector_data, &mut index),
             float64: reader::read_f64_ne(&vector_data, &mut index),
         };
 
         assert_eq!(parsed_struct, my_struct, "Converting using Native Endian Reader");
+    }
+
+    #[test]
+    fn fast_reader_ne() {
+        let my_struct = MyTestStruct::default();
+        let vector_data = my_struct.to_ne_bytes();
+        let mut fast_reader = FastByteReader::new(&vector_data);
+        let parsed_struct = MyTestStruct {
+            unsigned8: fast_reader.read_u8_ne(),
+            unsigned16: fast_reader.read_u16_ne(),
+            unsigned32: fast_reader.read_u32_ne(),
+            unsigned64: fast_reader.read_u64_ne(),
+            unsigned128: fast_reader.read_u128_ne(),
+            unsigned_size: fast_reader.read_usize_ne(),
+            signed8: fast_reader.read_i8_ne(),
+            signed16: fast_reader.read_i16_ne(),
+            signed32: fast_reader.read_i32_ne(),
+            signed64: fast_reader.read_i64_ne(),
+            signed128: fast_reader.read_i128_ne(),
+            signed_size: fast_reader.read_isize_ne(),
+            float16: fast_reader.read_f16_ne(),
+            float32: fast_reader.read_f32_ne(),
+            float64: fast_reader.read_f64_ne(),
+        };
+
+        assert_eq!(parsed_struct, my_struct, "Converting using Native Endian Reader");
+    }
+
+    #[test]
+    fn fast_reader_be() {
+        let my_struct = MyTestStruct::default();
+        let vector_data = my_struct.to_be_bytes();
+        let mut fast_reader = FastByteReader::new(&vector_data);
+        let parsed_struct = MyTestStruct {
+            unsigned8: fast_reader.read_u8_be(),
+            unsigned16: fast_reader.read_u16_be(),
+            unsigned32: fast_reader.read_u32_be(),
+            unsigned64: fast_reader.read_u64_be(),
+            unsigned128: fast_reader.read_u128_be(),
+            unsigned_size: fast_reader.read_usize_be(),
+            signed8: fast_reader.read_i8_be(),
+            signed16: fast_reader.read_i16_be(),
+            signed32: fast_reader.read_i32_be(),
+            signed64: fast_reader.read_i64_be(),
+            signed128: fast_reader.read_i128_be(),
+            signed_size: fast_reader.read_isize_be(),
+            float16: fast_reader.read_f16_be(),
+            float32: fast_reader.read_f32_be(),
+            float64: fast_reader.read_f64_be(),
+        };
+
+        assert_eq!(parsed_struct, my_struct, "Converting using Big Endian Reader");
+    }
+
+    #[test]
+    fn fast_reader_le() {
+        let my_struct = MyTestStruct::default();
+        let vector_data = my_struct.to_le_bytes();
+        let mut fast_reader = FastByteReader::new(&vector_data);
+        let parsed_struct = MyTestStruct {
+            unsigned8: fast_reader.read_u8_le(),
+            unsigned16: fast_reader.read_u16_le(),
+            unsigned32: fast_reader.read_u32_le(),
+            unsigned64: fast_reader.read_u64_le(),
+            unsigned128: fast_reader.read_u128_le(),
+            unsigned_size: fast_reader.read_usize_le(),
+            signed8: fast_reader.read_i8_le(),
+            signed16: fast_reader.read_i16_le(),
+            signed32: fast_reader.read_i32_le(),
+            signed64: fast_reader.read_i64_le(),
+            signed128: fast_reader.read_i128_le(),
+            signed_size: fast_reader.read_isize_le(),
+            float16: fast_reader.read_f16_le(),
+            float32: fast_reader.read_f32_le(),
+            float64: fast_reader.read_f64_le(),
+        };
+
+        assert_eq!(parsed_struct, my_struct, "Converting using Big Endian Reader");
     }
 
     // Has bound checks for every indexing operation

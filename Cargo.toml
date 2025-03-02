@@ -1,10 +1,10 @@
 [package]
 name = "hyper_byte"
-version = "0.1.0"
+version = "0.2.0"
 license = "MIT"
 authors = ["EasternGamer"]
 edition = "2021"
-description = "An unsafe, near-zero cost (1-2 instructions) byte transmuter to numeric types"
+description = "An unsafe, near-zero cost (1-2 instructions) byte transmuter to numeric types with fast byte reader"
 keywords = ["unsafe", "byte", "convert", "numeric"]
 repository = "https://github.com/EasternGamer/hyper_byte"
 readme = "README.md"

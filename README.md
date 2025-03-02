@@ -1,5 +1,5 @@
 # Hyper Byte
-An unsafe byte slice transmuter for Rust's numeric types, for all three endianness'.<br/>
+An unsafe byte slice transmuter and very fast iterator-like reader for Rust's numeric types, for all three endianness'.<br/>
 Additionally included is a simple-to-use byte reader.<br/>
 **Supported types:**
 * `u8`
@@ -45,7 +45,7 @@ pub unsafe fn read_f64_ne(bytes: &[u8]) -> f64 {
 }
 ```
 Benchmarking it is rather difficult since the compiler will do anything to optimize the call out completely (not run the code, I don't mean make it faster).
-However, instructions don't lie, and I did manage to create a benchmark, present around line 2256 in [lib.rs](src/lib.rs#L2256-L2284).<br/>
+However, instructions don't lie, and I did manage to create a benchmark, present around line 2256 in [lib.rs](src/lib.rs#L2286-L2314).<br/>
 In [Compiler Explorer](https://rust.godbolt.org/z/PfhWzGnnG), you can also see for yourself the instructions for each function.
 
 Running it on my machine, in debug mode, it is around 150% to 200% faster than `try_into`. In release mode, it is closer to only 20% faster.
@@ -53,8 +53,58 @@ Running it on my machine, in debug mode, it is around 150% to 200% faster than `
 > While I am very confident that this micro-optimization is faster than the existing solutions, I stand by this only until I'm otherwise corrected.
 
 ## Usage
-So how do you use this? Either you use the safe, simple reader implemented, or you use the unsafe functions.
-### Safe Reader
+### Fast Byte Reader
+If you want the fastest possible reader without going into completely unsafe territory, then you should use the FastByteReader.<br/>
+Simply, it is an iterator-like reader where reading a type will result in consuming up the reader.<br/>
+There are no results/options here, it will simply panic if you attempt to read bytes that don't exist. Thus, using this reader means the expected input has a very predictable content.
+```rust
+use hyper_byte::reader::FastReader;
+
+#[derive(PartialOrd, PartialEq, Debug)]
+struct MyTestStruct {
+    unsigned8: u8,
+    unsigned16: u16,
+    unsigned32: u32,
+    unsigned64: u64,
+    unsigned128: u128,
+    unsigned_size: usize,
+    signed8: i8,
+    signed16: i16,
+    signed32: i32,
+    signed64: i64,
+    signed128: i128,
+    signed_size: isize,
+    float16: f16, // if `half` is enabled
+    float32: f32,
+    float64: f64,
+}
+
+fn main() {
+    let some_byte_stream : Vec<u8> = Vec::new();
+    
+    let fast_reader = FastReader::new(&some_byte_stream);
+    
+    let parsed_struct = MyTestStruct {
+        unsigned8: fast_reader.read_u8_be(),
+        unsigned16: fast_reader.read_u16_be(),
+        unsigned32: fast_reader.read_u32_be(),
+        unsigned64: fast_reader.read_u64_be(),
+        unsigned128: fast_reader.read_u128_be(),
+        unsigned_size: fast_reader.read_usize_be(),
+        signed8: fast_reader.read_i8_be(),
+        signed16: fast_reader.read_i16_be(),
+        signed32: fast_reader.read_i32_be(),
+        signed64: fast_reader.read_i64_be(),
+        signed128: fast_reader.read_i128_be(),
+        signed_size: fast_reader.read_isize_be(),
+        float16: fast_reader.read_f16_be(),
+        float32: fast_reader.read_f32_be(),
+        float64: fast_reader.read_f64_be(),
+    };
+}
+```
+### Basic Reader
+If you want a more "hands on" reader implementation with a bit more protection and nicer panic messages, this is the reader for you. It is slower than the fast reader (it has 13 instructions vs 9 instructions for the fast reader) because it has an index and additional bound check.
 ```rust
 use hyper_byte::reader;
 
@@ -101,6 +151,7 @@ fn main() {
 }
 ```
 ### Unsafe Functions
+This is for if you have an even faster way of doing these operations, or want to use these functions standalone in someway. It is quite literally 1-2 instructions. It is 1 instruction using native-endian.
 ```rust
 pub fn read_u16_be(array : &[u8], index: &mut usize) -> u16 {
     let current_index = *index;
