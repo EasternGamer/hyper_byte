@@ -2265,6 +2265,154 @@ mod tests {
 
         assert_eq!(parsed_struct, my_struct, "Converting using Big Endian Reader");
     }
+    
+    #[test]
+    fn skips() {
+        let mut bytes = Vec::new();
+        102u8.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        122u8.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+
+        1345u16.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        1567u16.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+
+        1345445335u32.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        1561366457u32.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+
+        134545847675787u64.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        156721881824556u64.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+
+        1345458476757874858183847456634787169u128.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        1567218818245541501092162486263847136u128.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+
+        134545847675787485usize.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        1567218818245541445usize.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+
+        102i8.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        122i8.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+
+        1345i16.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        1567i16.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+
+        1345445335i32.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        1561366457i32.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+
+        134545847675787i64.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        156721881824556i64.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+
+        1345458476757874858183847456634787169i128.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        1567218818245541501092162486263847136i128.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+
+        1345458476757874858isize.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        1567218818245541506isize.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+
+        f16::from_f32(383.0).to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        f16::from_f32(323.0).to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+
+        3942.543f32.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        3956.33f32.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+
+        39545342436.5633f64.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        3954534243436.1834f64.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+
+        39545342436.56331f64.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        39545342436.56332f64.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        39545342436.56333f64.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        3954534243436.1834f64.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+
+        39545342436.56331f64.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        39545342436.56332f64.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        39545342436.56333f64.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        3954534243436.1834f64.to_ne_bytes().into_iter()
+            .for_each(|x| bytes.push(x));
+        
+        let mut reader = FastByteReader::new(&bytes);
+        reader.skip_u8();
+        assert_eq!(122u8, reader.read_u8_ne());
+        reader.skip_u16();
+        assert_eq!(1567u16, reader.read_u16_ne());
+        reader.skip_u32();
+        assert_eq!(1561366457u32, reader.read_u32_ne());
+        reader.skip_u64();
+        assert_eq!(156721881824556u64, reader.read_u64_ne());
+        reader.skip_u128();
+        assert_eq!(1567218818245541501092162486263847136u128, reader.read_u128_ne());
+        reader.skip_usize();
+        assert_eq!(1567218818245541445usize, reader.read_usize_ne());
+
+        reader.skip_i8();
+        assert_eq!(122i8, reader.read_i8_ne());
+        reader.skip_i16();
+        assert_eq!(1567i16, reader.read_i16_ne());
+        reader.skip_i32();
+        assert_eq!(1561366457i32, reader.read_i32_ne());
+        reader.skip_i64();
+        assert_eq!(156721881824556i64, reader.read_i64_ne());
+        reader.skip_i128();
+        assert_eq!(1567218818245541501092162486263847136i128, reader.read_i128_ne());
+        reader.skip_isize();
+        assert_eq!(1567218818245541506isize, reader.read_isize_ne());
+
+        reader.skip_f16();
+        assert_eq!(f16::from_f32(323.0), reader.read_f16_ne());
+        reader.skip_f32();
+        assert_eq!(3956.33f32, reader.read_f32_ne());
+        reader.skip_f64();
+        assert_eq!(3954534243436.1834f64, reader.read_f64_ne());
+        
+        reader.skip_n(16);
+        assert_eq!(39545342436.56333f64, reader.read_f64_ne());
+        assert_eq!(3954534243436.1834f64, reader.read_f64_ne());
+
+        
+        let mut equate_bytes = Vec::new();
+        39545342436.56331f64.to_ne_bytes().into_iter()
+            .for_each(|x| equate_bytes.push(x));
+        39545342436.56332f64.to_ne_bytes().into_iter()
+            .for_each(|x| equate_bytes.push(x));
+        39545342436.56333f64.to_ne_bytes().into_iter()
+            .for_each(|x| equate_bytes.push(x));
+        3954534243436.1834f64.to_ne_bytes().into_iter()
+            .for_each(|x| equate_bytes.push(x));
+        
+        assert_eq!(reader.read_n(8*4), equate_bytes);
+    }
 
     // Has bound checks for every indexing operation
     #[no_mangle]

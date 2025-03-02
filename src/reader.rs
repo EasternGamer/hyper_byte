@@ -1358,7 +1358,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read u8 of big-endian of an array.");
+            panic!("Attempted to read u8 of big-endian of an array without enough space within the array.");
         }
     }
 
@@ -1376,7 +1376,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read u16 of big-endian of an array.");
+            panic!("Attempted to read u16 of big-endian of an array without enough space within the array.");
         }
     }
 
@@ -1394,7 +1394,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read u32 of big-endian of an array.");
+            panic!("Attempted to read u32 of big-endian of an array without enough space within the array.");
         }
     }
 
@@ -1412,7 +1412,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read u64 of big-endian of an array.");
+            panic!("Attempted to read u64 of big-endian of an array without enough space within the array.");
         }
     }
 
@@ -1430,7 +1430,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read u128 of big-endian of an array.");
+            panic!("Attempted to read u128 of big-endian of an array without enough space within the array.");
         }
     }
 
@@ -1448,7 +1448,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read usize of big-endian of an array.");
+            panic!("Attempted to read usize of big-endian of an array without enough space within the array.");
         }
     }
 
@@ -1466,7 +1466,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read i8 of big-endian of an array.");
+            panic!("Attempted to read i8 of big-endian of an array without enough space within the array.");
         }
     }
 
@@ -1484,7 +1484,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read i16 of big-endian of an array.");
+            panic!("Attempted to read i16 of big-endian of an array without enough space within the array.");
         }
     }
 
@@ -1502,7 +1502,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read i32 of big-endian of an array.");
+            panic!("Attempted to read i32 of big-endian of an array without enough space within the array.");
         }
     }
 
@@ -1520,7 +1520,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read i64 of big-endian of an array.");
+            panic!("Attempted to read i64 of big-endian of an array without enough space within the array.");
         }
     }
 
@@ -1538,7 +1538,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read i128 of big-endian of an array.");
+            panic!("Attempted to read i128 of big-endian of an array without enough space within the array.");
         }
     }
 
@@ -1556,7 +1556,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read isize of big-endian of an array.");
+            panic!("Attempted to read isize of big-endian of an array without enough space within the array.");
         }
     }
 
@@ -1575,7 +1575,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read f16 of big-endian of an array.");
+            panic!("Attempted to read f16 of big-endian of an array without enough space within the array.");
         }
     }
 
@@ -1593,7 +1593,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read f32 of big-endian of an array.");
+            panic!("Attempted to read f32 of big-endian of an array without enough space within the array.");
         }
     }
 
@@ -1611,7 +1611,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read f64 of big-endian of an array.");
+            panic!("Attempted to read f64 of big-endian of an array without enough space within the array.");
         }
     }
 
@@ -1629,7 +1629,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read u8 of little-endian of an array.");
+            panic!("Attempted to read u8 of little-endian of an array without enough space within the array.");
         }
     }
 
@@ -1647,7 +1647,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read u16 of little-endian of an array.");
+            panic!("Attempted to read u16 of little-endian of an array without enough space within the array.");
         }
     }
 
@@ -1665,7 +1665,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read u32 of little-endian of an array.");
+            panic!("Attempted to read u32 of little-endian of an array without enough space within the array.");
         }
     }
 
@@ -1683,7 +1683,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read u64 of little-endian of an array.");
+            panic!("Attempted to read u64 of little-endian of an array without enough space within the array.");
         }
     }
 
@@ -1701,7 +1701,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read u128 of little-endian of an array.");
+            panic!("Attempted to read u128 of little-endian of an array without enough space within the array.");
         }
     }
 
@@ -1719,7 +1719,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read usize of little-endian of an array.");
+            panic!("Attempted to read usize of little-endian of an array without enough space within the array.");
         }
     }
 
@@ -1737,7 +1737,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read i8 of little-endian of an array.");
+            panic!("Attempted to read i8 of little-endian of an array without enough space within the array.");
         }
     }
 
@@ -1755,7 +1755,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read i16 of little-endian of an array.");
+            panic!("Attempted to read i16 of little-endian of an array without enough space within the array.");
         }
     }
 
@@ -1773,7 +1773,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read i32 of little-endian of an array.");
+            panic!("Attempted to read i32 of little-endian of an array without enough space within the array.");
         }
     }
 
@@ -1791,7 +1791,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read i64 of little-endian of an array.");
+            panic!("Attempted to read i64 of little-endian of an array without enough space within the array.");
         }
     }
 
@@ -1809,7 +1809,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read i128 of little-endian of an array.");
+            panic!("Attempted to read i128 of little-endian of an array without enough space within the array.");
         }
     }
 
@@ -1827,7 +1827,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read isize of little-endian of an array.");
+            panic!("Attempted to read isize of little-endian of an array without enough space within the array.");
         }
     }
 
@@ -1846,7 +1846,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read f16 of little-endian of an array.");
+            panic!("Attempted to read f16 of little-endian of an array without enough space within the array.");
         }
     }
 
@@ -1864,7 +1864,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read f32 of little-endian of an array.");
+            panic!("Attempted to read f32 of little-endian of an array without enough space within the array.");
         }
     }
 
@@ -1882,7 +1882,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read f64 of little-endian of an array.");
+            panic!("Attempted to read f64 of little-endian of an array without enough space within the array.");
         }
     }
 
@@ -1900,7 +1900,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read u8 of native-endian of an array.");
+            panic!("Attempted to read u8 of native-endian of an array without enough space within the array.");
         }
     }
 
@@ -1918,7 +1918,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read u16 of native-endian of an array.");
+            panic!("Attempted to read u16 of native-endian of an array without enough space within the array.");
         }
     }
 
@@ -1936,7 +1936,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read u32 of native-endian of an array.");
+            panic!("Attempted to read u32 of native-endian of an array without enough space within the array.");
         }
     }
 
@@ -1954,7 +1954,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read u64 of native-endian of an array.");
+            panic!("Attempted to read u64 of native-endian of an array without enough space within the array.");
         }
     }
 
@@ -1972,7 +1972,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read u128 of native-endian of an array.");
+            panic!("Attempted to read u128 of native-endian of an array without enough space within the array.");
         }
     }
 
@@ -1990,7 +1990,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read usize of native-endian of an array.");
+            panic!("Attempted to read usize of native-endian of an array without enough space within the array.");
         }
     }
 
@@ -2008,7 +2008,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read i8 of native-endian of an array.");
+            panic!("Attempted to read i8 of native-endian of an array without enough space within the array.");
         }
     }
 
@@ -2026,7 +2026,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read i16 of native-endian of an array.");
+            panic!("Attempted to read i16 of native-endian of an array without enough space within the array.");
         }
     }
 
@@ -2044,7 +2044,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read i32 of native-endian of an array.");
+            panic!("Attempted to read i32 of native-endian of an array without enough space within the array.");
         }
     }
 
@@ -2062,7 +2062,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read i64 of native-endian of an array.");
+            panic!("Attempted to read i64 of native-endian of an array without enough space within the array.");
         }
     }
 
@@ -2080,7 +2080,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read i128 of native-endian of an array.");
+            panic!("Attempted to read i128 of native-endian of an array without enough space within the array.");
         }
     }
 
@@ -2098,7 +2098,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read isize of native-endian of an array.");
+            panic!("Attempted to read isize of native-endian of an array without enough space within the array.");
         }
     }
 
@@ -2117,7 +2117,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read f16 of native-endian of an array.");
+            panic!("Attempted to read f16 of native-endian of an array without enough space within the array.");
         }
     }
 
@@ -2135,7 +2135,7 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read f32 of native-endian of an array.");
+            panic!("Attempted to read f32 of native-endian of an array without enough space within the array.");
         }
     }
 
@@ -2153,7 +2153,145 @@ impl<'reader> FastByteReader<'reader> {
                 data
             }
         } else {
-            panic!("Attempted to read f64 of native-endian of an array.");
+            panic!("Attempted to read f64 of native-endian of an array without enough space within the array.");
+        }
+    }
+
+    /// Skips a `[u8]` number of bytes from the byte array, advancing the reader forward</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub fn skip_u8(&mut self) {
+        self.skip_n(size_of::<u8>());
+    }
+
+    /// Skips an `[i16]` number of bytes from the byte array, advancing the reader forward</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub fn skip_u16(&mut self) {
+        self.skip_n(size_of::<u16>());
+    }
+
+    /// Skips an `[i32]` number of bytes from the byte array, advancing the reader forward</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub fn skip_u32(&mut self) {
+        self.skip_n(size_of::<u32>());
+    }
+
+    /// Skips an `[u64]` number of bytes from the byte array, advancing the reader forward</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub fn skip_u64(&mut self) {
+        self.skip_n(size_of::<u64>());
+    }
+
+    /// Skips an `[u128]` number of bytes from the byte array, advancing the reader forward</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub fn skip_u128(&mut self) {
+        self.skip_n(size_of::<u128>());
+    }
+
+    /// Skips an `[usize]` number of bytes from the byte array, advancing the reader forward</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub fn skip_usize(&mut self) {
+        self.skip_n(size_of::<usize>());
+    }
+
+    /// Skips an `[i8]` number of bytes from the byte array, advancing the reader forward</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub fn skip_i8(&mut self) {
+        self.skip_n(size_of::<i8>());
+    }
+
+    /// Skips an `[i16]` number of bytes from the byte array, advancing the reader forward</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub fn skip_i16(&mut self) {
+        self.skip_n(size_of::<i16>());
+    }
+
+    /// Skips an `[i32]` number of bytes from the byte array, advancing the reader forward</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub fn skip_i32(&mut self) {
+        self.skip_n(size_of::<i32>());
+    }
+
+    /// Skips an `[i64]` number of bytes from the byte array, advancing the reader forward</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub fn skip_i64(&mut self) {
+        self.skip_n(size_of::<i64>());
+    }
+
+    /// Skips an `[i128]` number of bytes from the byte array, advancing the reader forward</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub fn skip_i128(&mut self) {
+        self.skip_n(size_of::<i128>());
+    }
+
+    /// Skips an `[isize]` number of bytes from the byte array, advancing the reader forward</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub fn skip_isize(&mut self) {
+        self.skip_n(size_of::<isize>());
+    }
+
+    #[cfg(feature = "half")]
+    /// Skips a `[f16]` number of bytes from the byte array, advancing the reader forward</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub fn skip_f16(&mut self) {
+        self.skip_n(size_of::<f16>());
+    }
+
+    /// Skips a `[f32]` number of bytes from the byte array, advancing the reader forward</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub fn skip_f32(&mut self) {
+        self.skip_n(size_of::<f32>());
+    }
+
+    /// Skips a `[f64]` number of bytes from the byte array, advancing the reader forward</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub fn skip_f64(&mut self) {
+        self.skip_n(size_of::<f64>());
+    }
+
+    /// Skips a custom number of bytes from the byte array, advancing the reader forward by the specified [`byte_size`] of bytes</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub const fn skip_n(&mut self, byte_size : usize) {
+        let new_length = (self.byte_array.len() as isize) - byte_size as isize;
+        if new_length >= 0 {
+            // SAFETY: This will only execute if it is within bounds of the array
+            unsafe {
+                self.byte_array = &*slice_from_raw_parts(self.byte_array.as_ptr().add(byte_size), new_length as usize);
+            }
+        } else {
+            panic!("Attempted to skip bytes of an array without space in the array.");
+        }
+    }
+
+    /// Reads a custom number of bytes from the byte array, advancing the reader forward by the specified [`byte_size`] of bytes</br>
+    /// Panics if there is not enough space
+    #[inline(always)]
+    pub fn read_n(&mut self, byte_size : usize) -> Vec<u8> {
+        let new_length = (self.byte_array.len() as isize) - byte_size as isize;
+        if new_length >= 0 {
+            // SAFETY: This will only execute if it is within bounds of the array
+            unsafe {
+                let bytes = self.byte_array[..byte_size].to_vec();
+                self.byte_array = &*slice_from_raw_parts(self.byte_array.as_ptr().add(byte_size), new_length as usize);
+                bytes
+            }
+        } else {
+            panic!("Attempted to read custom number bytes of an array without space in the array.");
         }
     }
 }
