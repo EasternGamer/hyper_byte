@@ -1,4 +1,7 @@
 pub mod reader;
+pub mod readers;
+pub mod writer;
+pub mod writers;
 
 #[cfg(feature = "half")]
 use half::f16;
@@ -1451,9 +1454,11 @@ pub unsafe fn read_f64_ne(bytes: &[u8]) -> f64 {
 
 #[cfg(test)]
 mod tests {
-    use super::reader;
-    use super::reader::FastByteReader;
     use super::*;
+    use crate::reader::FastByteReader;
+    use crate::readers::traits::*;
+    use crate::writer::FastByteWriter;
+    use crate::writers::traits::*;
     use half::f16;
     use std::hint;
     use std::time::Instant;
@@ -1880,6 +1885,7 @@ mod tests {
         float16: f16,
         float32: f32,
         float64: f64,
+        raw_data: Vec<u8>,
     }
 
     impl Default for MyTestStruct {
@@ -1900,292 +1906,86 @@ mod tests {
                 float16: f16::from_f32_const(93.21),
                 float32: 38.358482,
                 float64: 32848.23488,
+                raw_data: vec![82u8, 38u8, 10u8, 2u8, 31u8, 165u8],
             }
         }
     }
-    
+
     impl MyTestStruct {
         pub fn to_be_bytes(&self) -> Vec<u8> {
-            let mut bytes = Vec::new();
+            let mut writer = FastByteWriter::new();
+            writer.write_u8_be(self.unsigned8);
+            writer.write_u16_be(self.unsigned16);
+            writer.write_u32_be(self.unsigned32);
+            writer.write_u64_be(self.unsigned64);
+            writer.write_u128_be(self.unsigned128);
+            writer.write_usize_be(self.unsigned_size);
 
-            self.unsigned8
-                .to_be_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.unsigned16
-                .to_be_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.unsigned32
-                .to_be_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.unsigned64
-                .to_be_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.unsigned128
-                .to_be_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.unsigned_size
-                .to_be_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
+            writer.write_i8_be(self.signed8);
+            writer.write_i16_be(self.signed16);
+            writer.write_i32_be(self.signed32);
+            writer.write_i64_be(self.signed64);
+            writer.write_i128_be(self.signed128);
+            writer.write_isize_be(self.signed_size);
 
-            self.signed8
-                .to_be_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.signed16
-                .to_be_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.signed32
-                .to_be_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.signed64
-                .to_be_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.signed128
-                .to_be_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.signed_size
-                .to_be_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
+            writer.write_f16_be(self.float16);
+            writer.write_f32_be(self.float32);
+            writer.write_f64_be(self.float64);
 
-            self.float16
-                .to_be_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.float32
-                .to_be_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.float64
-                .to_be_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            bytes
+            writer.write_bytes_be(&self.raw_data);
+
+            writer.to_vec()
         }
 
         pub fn to_le_bytes(&self) -> Vec<u8> {
-            let mut bytes = Vec::new();
+            let mut writer = FastByteWriter::new();
+            writer.write_u8_le(self.unsigned8);
+            writer.write_u16_le(self.unsigned16);
+            writer.write_u32_le(self.unsigned32);
+            writer.write_u64_le(self.unsigned64);
+            writer.write_u128_le(self.unsigned128);
+            writer.write_usize_le(self.unsigned_size);
 
-            self.unsigned8
-                .to_le_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.unsigned16
-                .to_le_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.unsigned32
-                .to_le_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.unsigned64
-                .to_le_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.unsigned128
-                .to_le_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.unsigned_size
-                .to_le_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
+            writer.write_i8_le(self.signed8);
+            writer.write_i16_le(self.signed16);
+            writer.write_i32_le(self.signed32);
+            writer.write_i64_le(self.signed64);
+            writer.write_i128_le(self.signed128);
+            writer.write_isize_le(self.signed_size);
 
-            self.signed8
-                .to_le_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.signed16
-                .to_le_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.signed32
-                .to_le_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.signed64
-                .to_le_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.signed128
-                .to_le_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.signed_size
-                .to_le_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
+            writer.write_f16_le(self.float16);
+            writer.write_f32_le(self.float32);
+            writer.write_f64_le(self.float64);
 
-            self.float16
-                .to_le_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.float32
-                .to_le_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.float64
-                .to_le_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            bytes
+            writer.write_bytes_le(&self.raw_data);
+
+            writer.to_vec()
         }
 
         pub fn to_ne_bytes(&self) -> Vec<u8> {
-            let mut bytes = Vec::new();
+            let mut writer = FastByteWriter::new();
+            writer.write_u8_ne(self.unsigned8);
+            writer.write_u16_ne(self.unsigned16);
+            writer.write_u32_ne(self.unsigned32);
+            writer.write_u64_ne(self.unsigned64);
+            writer.write_u128_ne(self.unsigned128);
+            writer.write_usize_ne(self.unsigned_size);
 
-            self.unsigned8
-                .to_ne_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.unsigned16
-                .to_ne_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.unsigned32
-                .to_ne_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.unsigned64
-                .to_ne_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.unsigned128
-                .to_ne_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.unsigned_size
-                .to_ne_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
+            writer.write_i8_ne(self.signed8);
+            writer.write_i16_ne(self.signed16);
+            writer.write_i32_ne(self.signed32);
+            writer.write_i64_ne(self.signed64);
+            writer.write_i128_ne(self.signed128);
+            writer.write_isize_ne(self.signed_size);
 
-            self.signed8
-                .to_ne_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.signed16
-                .to_ne_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.signed32
-                .to_ne_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.signed64
-                .to_ne_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.signed128
-                .to_ne_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.signed_size
-                .to_ne_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
+            writer.write_f16_ne(self.float16);
+            writer.write_f32_ne(self.float32);
+            writer.write_f64_ne(self.float64);
 
-            self.float16
-                .to_ne_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.float32
-                .to_ne_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            self.float64
-                .to_ne_bytes()
-                .into_iter()
-                .for_each(|x| bytes.push(x));
-            bytes
+            writer.write_bytes_ne(&self.raw_data);
+
+            writer.to_vec()
         }
-    }
-
-    #[test]
-    fn reader_be() {
-        let my_struct = MyTestStruct::default();
-        let vector_data = my_struct.to_be_bytes();
-        let mut index = 0;
-        let parsed_struct = MyTestStruct {
-            unsigned8: reader::read_u8_be(&vector_data, &mut index),
-            unsigned16: reader::read_u16_be(&vector_data, &mut index),
-            unsigned32: reader::read_u32_be(&vector_data, &mut index),
-            unsigned64: reader::read_u64_be(&vector_data, &mut index),
-            unsigned128: reader::read_u128_be(&vector_data, &mut index),
-            unsigned_size: reader::read_usize_be(&vector_data, &mut index),
-            signed8: reader::read_i8_be(&vector_data, &mut index),
-            signed16: reader::read_i16_be(&vector_data, &mut index),
-            signed32: reader::read_i32_be(&vector_data, &mut index),
-            signed64: reader::read_i64_be(&vector_data, &mut index),
-            signed128: reader::read_i128_be(&vector_data, &mut index),
-            signed_size: reader::read_isize_be(&vector_data, &mut index),
-            float16: reader::read_f16_be(&vector_data, &mut index),
-            float32: reader::read_f32_be(&vector_data, &mut index),
-            float64: reader::read_f64_be(&vector_data, &mut index),
-        };
-
-        assert_eq!(parsed_struct, my_struct, "Converting using Big Endian Reader");
-    }
-    
-    #[test]
-    fn reader_le() {
-        let my_struct = MyTestStruct::default();
-        let vector_data = my_struct.to_le_bytes();
-        let mut index = 0;
-        let parsed_struct = MyTestStruct {
-            unsigned8: reader::read_u8_le(&vector_data, &mut index),
-            unsigned16: reader::read_u16_le(&vector_data, &mut index),
-            unsigned32: reader::read_u32_le(&vector_data, &mut index),
-            unsigned64: reader::read_u64_le(&vector_data, &mut index),
-            unsigned128: reader::read_u128_le(&vector_data, &mut index),
-            unsigned_size: reader::read_usize_le(&vector_data, &mut index),
-            signed8: reader::read_i8_le(&vector_data, &mut index),
-            signed16: reader::read_i16_le(&vector_data, &mut index),
-            signed32: reader::read_i32_le(&vector_data, &mut index),
-            signed64: reader::read_i64_le(&vector_data, &mut index),
-            signed128: reader::read_i128_le(&vector_data, &mut index),
-            signed_size: reader::read_isize_le(&vector_data, &mut index),
-            float16: reader::read_f16_le(&vector_data, &mut index),
-            float32: reader::read_f32_le(&vector_data, &mut index),
-            float64: reader::read_f64_le(&vector_data, &mut index),
-        };
-
-        assert_eq!(parsed_struct, my_struct, "Converting using Little Endian Reader");
-    }
-    
-    #[test]
-    fn reader_ne() {
-        let my_struct = MyTestStruct::default();
-        let vector_data = my_struct.to_ne_bytes();
-        let mut index = 0;
-        let parsed_struct = MyTestStruct {
-            unsigned8: reader::read_u8_ne(&vector_data, &mut index),
-            unsigned16: reader::read_u16_ne(&vector_data, &mut index),
-            unsigned32: reader::read_u32_ne(&vector_data, &mut index),
-            unsigned64: reader::read_u64_ne(&vector_data, &mut index),
-            unsigned128: reader::read_u128_ne(&vector_data, &mut index),
-            unsigned_size: reader::read_usize_ne(&vector_data, &mut index),
-            signed8: reader::read_i8_ne(&vector_data, &mut index),
-            signed16: reader::read_i16_ne(&vector_data, &mut index),
-            signed32: reader::read_i32_ne(&vector_data, &mut index),
-            signed64: reader::read_i64_ne(&vector_data, &mut index),
-            signed128: reader::read_i128_ne(&vector_data, &mut index),
-            signed_size: reader::read_isize_ne(&vector_data, &mut index),
-            float16: reader::read_f16_ne(&vector_data, &mut index),
-            float32: reader::read_f32_ne(&vector_data, &mut index),
-            float64: reader::read_f64_ne(&vector_data, &mut index),
-        };
-
-        assert_eq!(parsed_struct, my_struct, "Converting using Native Endian Reader");
     }
 
     #[test]
@@ -2209,9 +2009,13 @@ mod tests {
             float16: fast_reader.read_f16_ne(),
             float32: fast_reader.read_f32_ne(),
             float64: fast_reader.read_f64_ne(),
+            raw_data: fast_reader.read_n_ne(6),
         };
 
-        assert_eq!(parsed_struct, my_struct, "Converting using Native Endian Reader");
+        assert_eq!(
+            parsed_struct, my_struct,
+            "Converting using Native Endian Reader"
+        );
     }
 
     #[test]
@@ -2235,9 +2039,13 @@ mod tests {
             float16: fast_reader.read_f16_be(),
             float32: fast_reader.read_f32_be(),
             float64: fast_reader.read_f64_be(),
+            raw_data: fast_reader.read_n_be(6),
         };
 
-        assert_eq!(parsed_struct, my_struct, "Converting using Big Endian Reader");
+        assert_eq!(
+            parsed_struct, my_struct,
+            "Converting using Big Endian Reader"
+        );
     }
 
     #[test]
@@ -2261,107 +2069,175 @@ mod tests {
             float16: fast_reader.read_f16_le(),
             float32: fast_reader.read_f32_le(),
             float64: fast_reader.read_f64_le(),
+            raw_data: fast_reader.read_n_le(6),
         };
 
-        assert_eq!(parsed_struct, my_struct, "Converting using Big Endian Reader");
+        assert_eq!(
+            parsed_struct, my_struct,
+            "Converting using Big Endian Reader"
+        );
     }
-    
+
     #[test]
     fn skips() {
         let mut bytes = Vec::new();
-        102u8.to_ne_bytes().into_iter()
+        102u8.to_ne_bytes().into_iter().for_each(|x| bytes.push(x));
+        122u8.to_ne_bytes().into_iter().for_each(|x| bytes.push(x));
+
+        1345u16
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
-        122u8.to_ne_bytes().into_iter()
+        1567u16
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
 
-        1345u16.to_ne_bytes().into_iter()
+        1345445335u32
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
-        1567u16.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-
-        1345445335u32.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-        1561366457u32.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-
-        134545847675787u64.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-        156721881824556u64.to_ne_bytes().into_iter()
+        1561366457u32
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
 
-        1345458476757874858183847456634787169u128.to_ne_bytes().into_iter()
+        134545847675787u64
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
-        1567218818245541501092162486263847136u128.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-
-        134545847675787485usize.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-        1567218818245541445usize.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-
-        102i8.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-        122i8.to_ne_bytes().into_iter()
+        156721881824556u64
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
 
-        1345i16.to_ne_bytes().into_iter()
+        1345458476757874858183847456634787169u128
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
-        1567i16.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-
-        1345445335i32.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-        1561366457i32.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-
-        134545847675787i64.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-        156721881824556i64.to_ne_bytes().into_iter()
+        1567218818245541501092162486263847136u128
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
 
-        1345458476757874858183847456634787169i128.to_ne_bytes().into_iter()
+        134545847675787485usize
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
-        1567218818245541501092162486263847136i128.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-
-        1345458476757874858isize.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-        1567218818245541506isize.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-
-        f16::from_f32(383.0).to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-        f16::from_f32(323.0).to_ne_bytes().into_iter()
+        1567218818245541445usize
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
 
-        3942.543f32.to_ne_bytes().into_iter()
+        102i8.to_ne_bytes().into_iter().for_each(|x| bytes.push(x));
+        122i8.to_ne_bytes().into_iter().for_each(|x| bytes.push(x));
+
+        1345i16
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
-        3956.33f32.to_ne_bytes().into_iter()
+        1567i16
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
 
-        39545342436.5633f64.to_ne_bytes().into_iter()
+        1345445335i32
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
-        3954534243436.1834f64.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-
-        39545342436.56331f64.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-        39545342436.56332f64.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-        39545342436.56333f64.to_ne_bytes().into_iter()
-            .for_each(|x| bytes.push(x));
-        3954534243436.1834f64.to_ne_bytes().into_iter()
+        1561366457i32
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
 
-        39545342436.56331f64.to_ne_bytes().into_iter()
+        134545847675787i64
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
-        39545342436.56332f64.to_ne_bytes().into_iter()
+        156721881824556i64
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
-        39545342436.56333f64.to_ne_bytes().into_iter()
+
+        1345458476757874858183847456634787169i128
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
-        3954534243436.1834f64.to_ne_bytes().into_iter()
+        1567218818245541501092162486263847136i128
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| bytes.push(x));
-        
+
+        1345458476757874858isize
+            .to_ne_bytes()
+            .into_iter()
+            .for_each(|x| bytes.push(x));
+        1567218818245541506isize
+            .to_ne_bytes()
+            .into_iter()
+            .for_each(|x| bytes.push(x));
+
+        f16::from_f32(383.0)
+            .to_ne_bytes()
+            .into_iter()
+            .for_each(|x| bytes.push(x));
+        f16::from_f32(323.0)
+            .to_ne_bytes()
+            .into_iter()
+            .for_each(|x| bytes.push(x));
+
+        3942.543f32
+            .to_ne_bytes()
+            .into_iter()
+            .for_each(|x| bytes.push(x));
+        3956.33f32
+            .to_ne_bytes()
+            .into_iter()
+            .for_each(|x| bytes.push(x));
+
+        39545342436.5633f64
+            .to_ne_bytes()
+            .into_iter()
+            .for_each(|x| bytes.push(x));
+        3954534243436.1834f64
+            .to_ne_bytes()
+            .into_iter()
+            .for_each(|x| bytes.push(x));
+
+        39545342436.56331f64
+            .to_ne_bytes()
+            .into_iter()
+            .for_each(|x| bytes.push(x));
+        39545342436.56332f64
+            .to_ne_bytes()
+            .into_iter()
+            .for_each(|x| bytes.push(x));
+        39545342436.56333f64
+            .to_ne_bytes()
+            .into_iter()
+            .for_each(|x| bytes.push(x));
+        3954534243436.1834f64
+            .to_ne_bytes()
+            .into_iter()
+            .for_each(|x| bytes.push(x));
+
+        39545342436.56331f64
+            .to_ne_bytes()
+            .into_iter()
+            .for_each(|x| bytes.push(x));
+        39545342436.56332f64
+            .to_ne_bytes()
+            .into_iter()
+            .for_each(|x| bytes.push(x));
+        39545342436.56333f64
+            .to_ne_bytes()
+            .into_iter()
+            .for_each(|x| bytes.push(x));
+        3954534243436.1834f64
+            .to_ne_bytes()
+            .into_iter()
+            .for_each(|x| bytes.push(x));
+
         let mut reader = FastByteReader::new(&bytes);
         reader.skip_u8();
         assert_eq!(122u8, reader.read_u8_ne());
@@ -2372,7 +2248,10 @@ mod tests {
         reader.skip_u64();
         assert_eq!(156721881824556u64, reader.read_u64_ne());
         reader.skip_u128();
-        assert_eq!(1567218818245541501092162486263847136u128, reader.read_u128_ne());
+        assert_eq!(
+            1567218818245541501092162486263847136u128,
+            reader.read_u128_ne()
+        );
         reader.skip_usize();
         assert_eq!(1567218818245541445usize, reader.read_usize_ne());
 
@@ -2385,7 +2264,10 @@ mod tests {
         reader.skip_i64();
         assert_eq!(156721881824556i64, reader.read_i64_ne());
         reader.skip_i128();
-        assert_eq!(1567218818245541501092162486263847136i128, reader.read_i128_ne());
+        assert_eq!(
+            1567218818245541501092162486263847136i128,
+            reader.read_i128_ne()
+        );
         reader.skip_isize();
         assert_eq!(1567218818245541506isize, reader.read_isize_ne());
 
@@ -2395,23 +2277,30 @@ mod tests {
         assert_eq!(3956.33f32, reader.read_f32_ne());
         reader.skip_f64();
         assert_eq!(3954534243436.1834f64, reader.read_f64_ne());
-        
+
         reader.skip_n(16);
         assert_eq!(39545342436.56333f64, reader.read_f64_ne());
         assert_eq!(3954534243436.1834f64, reader.read_f64_ne());
 
-        
         let mut equate_bytes = Vec::new();
-        39545342436.56331f64.to_ne_bytes().into_iter()
+        39545342436.56331f64
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| equate_bytes.push(x));
-        39545342436.56332f64.to_ne_bytes().into_iter()
+        39545342436.56332f64
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| equate_bytes.push(x));
-        39545342436.56333f64.to_ne_bytes().into_iter()
+        39545342436.56333f64
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| equate_bytes.push(x));
-        3954534243436.1834f64.to_ne_bytes().into_iter()
+        3954534243436.1834f64
+            .to_ne_bytes()
+            .into_iter()
             .for_each(|x| equate_bytes.push(x));
-        
-        assert_eq!(reader.read_n(8*4), equate_bytes);
+
+        assert_eq!(reader.read_n_ne(8 * 4), equate_bytes);
     }
 
     // Has bound checks for every indexing operation

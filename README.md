@@ -1,6 +1,6 @@
 # Hyper Byte
-An unsafe byte slice transmuter and very fast iterator-like reader for Rust's numeric types, for all three endianness'.<br/>
-Additionally included is a simple-to-use byte reader.<br/>
+An unsafe byte slice transmuter and very fast iterator-like reader and writer for Rust's numeric types, for all three endianness'.<br/>
+<br/>
 **Supported types:**
 * `u8`
 * `u16`
@@ -17,6 +17,7 @@ Additionally included is a simple-to-use byte reader.<br/>
 * `f64`
 * `usize`
 * `isize`
+* `&[u8]` (a binary slice for any generic size)
 
 ## Why?
 What a great question. There are plenty of ways to do what this crate does, and there are plenty of crates which already do something similar.
@@ -45,7 +46,7 @@ pub unsafe fn read_f64_ne(bytes: &[u8]) -> f64 {
 }
 ```
 Benchmarking it is rather difficult since the compiler will do anything to optimize the call out completely (not run the code, I don't mean make it faster).
-However, instructions don't lie, and I did manage to create a benchmark, present around line 2256 in [lib.rs](src/lib.rs#L2286-L2314).<br/>
+However, instructions don't lie, and I did manage to create a benchmark, present around line 2322 in [lib.rs](src/lib.rs#L2322-L2351).<br/>
 In [Compiler Explorer](https://rust.godbolt.org/z/PfhWzGnnG), you can also see for yourself the instructions for each function.
 
 Running it on my machine, in debug mode, it is around 150% to 200% faster than `try_into`. In release mode, it is closer to only 20% faster.
@@ -53,12 +54,28 @@ Running it on my machine, in debug mode, it is around 150% to 200% faster than `
 > While I am very confident that this micro-optimization is faster than the existing solutions, I stand by this only until I'm otherwise corrected.
 
 ## Usage
+There are several-prebuilt readers/writers available, driven by traits.<br/>For reader traits it is:
+- [NativeEndianByteReader](src/readers/traits.rs#L140-L444)
+- [LittleEndianByteReader](src/readers/traits.rs#L446-L750)
+- [BigEndianByteReader](src/readers/traits.rs#L752-L1056)
+- For reader implementations, there is [FastByteReader](src/reader.rs#L4-L51), [NetworkReader](src/reader.rs#L53-L98), [LittleReader](src/reader.rs#L100-L145), and [NativeReader](src/reader.rs#L147-L193).
+
+For writer traits it is:
+- [NativeEndianByteWriter](src/writers/traits.rs#L72-L475)
+- [LittleEndianByteWriter](src/writers/traits.rs#L477-L880)
+- [BigEndianByteWriter](src/writers/traits.rs#L882-L1285)
+- For writer implementations, there is [FastByteWriter](src/writer.rs#L3-L71), [NetworkWriter](src/writer.rs#L73-L139), [LittleWriter](src/writer.rs#L141-L207), and [NativeWriter](src/writer.rs#L209-L275).
+
+You might be wondering... why does FastByteReader and FastByteWriter exist? Well, it is to enable cursed functionality such as switching between different endianness.
+At the heart of it, all these implementations are incredibly simple to re-implement in your own structs, you can even do a hybrid reader/writer.
+
 ### Fast Byte Reader
 If you want the fastest possible reader without going into completely unsafe territory, then you should use the FastByteReader.<br/>
 Simply, it is an iterator-like reader where reading a type will result in consuming up the reader.<br/>
 There are no results/options here, it will simply panic if you attempt to read bytes that don't exist. Thus, using this reader means the expected input has a very predictable content.
 ```rust
-use hyper_byte::reader::FastReader;
+use hyper_byte::reader::FastByteReader;
+use hyper_byte::readers::traits::BigEndianByteReader;
 
 #[derive(PartialOrd, PartialEq, Debug)]
 struct MyTestStruct {
@@ -77,6 +94,7 @@ struct MyTestStruct {
     float16: f16, // if `half` is enabled
     float32: f32,
     float64: f64,
+    raw_data: vec![82u8, 38u8, 10u8, 2u8, 31u8, 165u8],
 }
 
 fn main() {
@@ -100,13 +118,15 @@ fn main() {
         float16: fast_reader.read_f16_be(),
         float32: fast_reader.read_f32_be(),
         float64: fast_reader.read_f64_be(),
+        raw_data: fast_reader.read_n_be(6)
     };
 }
 ```
-### Basic Reader
-If you want a more "hands on" reader implementation with a bit more protection and nicer panic messages, this is the reader for you. It is slower than the fast reader (it has 13 instructions vs 9 instructions for the fast reader) because it has an index and additional bound check.
+### Fast Byte Writer
+If you want the fast writer with no particular endian-ness, without going into completely unsafe territory, then you should use the FastByteWriter.<br/>
 ```rust
-use hyper_byte::reader;
+use hyper_byte::writer::FastByteWriter;
+use hyper_byte::writers::traits::*;
 
 #[derive(PartialOrd, PartialEq, Debug)]
 struct MyTestStruct {
@@ -125,29 +145,84 @@ struct MyTestStruct {
     float16: f16, // if `half` is enabled
     float32: f32,
     float64: f64,
+    raw_data: vec![82u8, 38u8, 10u8, 2u8, 31u8, 165u8],
 }
 
-fn main() {
-    let some_byte_stream : Vec<u8> = Vec::new();
-    let mut index = 0;
+impl MyTestStruct {
+    pub fn to_be_bytes(&self) -> Vec<u8> {
+        let mut writer = FastByteWriter::new();
+        writer.write_u8_be(self.unsigned8);
+        writer.write_u16_be(self.unsigned16);
+        writer.write_u32_be(self.unsigned32);
+        writer.write_u64_be(self.unsigned64);
+        writer.write_u128_be(self.unsigned128);
+        writer.write_usize_be(self.unsigned_size);
 
-    let parsed_struct = MyTestStruct {
-        unsigned8: reader::read_u8_le(&vector_data, &mut index),
-        unsigned16: reader::read_u16_le(&vector_data, &mut index),
-        unsigned32: reader::read_u32_le(&vector_data, &mut index),
-        unsigned64: reader::read_u64_le(&vector_data, &mut index),
-        unsigned128: reader::read_u128_le(&vector_data, &mut index),
-        unsigned_size: reader::read_usize_le(&vector_data, &mut index),
-        signed8: reader::read_i8_le(&vector_data, &mut index),
-        signed16: reader::read_i16_le(&vector_data, &mut index), // if `half` is enabled
-        signed32: reader::read_i32_le(&vector_data, &mut index),
-        signed64: reader::read_i64_le(&vector_data, &mut index),
-        signed128: reader::read_i128_le(&vector_data, &mut index),
-        signed_size: reader::read_isize_le(&vector_data, &mut index),
-        float16: reader_read_f16_le(&vector_data, &mut index),
-        float32: reader::read_f32_le(&vector_data, &mut index),
-        float64: reader::read_f64_le(&vector_data, &mut index),
-    };
+        writer.write_i8_be(self.signed8);
+        writer.write_i16_be(self.signed16);
+        writer.write_i32_be(self.signed32);
+        writer.write_i64_be(self.signed64);
+        writer.write_i128_be(self.signed128);
+        writer.write_isize_be(self.signed_size);
+
+        writer.write_f16_be(self.float16);
+        writer.write_f32_be(self.float32);
+        writer.write_f64_be(self.float64);
+
+        writer.write_bytes_be(&self.raw_data);
+
+        writer.to_vec()
+    }
+
+    pub fn to_le_bytes(&self) -> Vec<u8> {
+        let mut writer = FastByteWriter::new();
+        writer.write_u8_le(self.unsigned8);
+        writer.write_u16_le(self.unsigned16);
+        writer.write_u32_le(self.unsigned32);
+        writer.write_u64_le(self.unsigned64);
+        writer.write_u128_le(self.unsigned128);
+        writer.write_usize_le(self.unsigned_size);
+
+        writer.write_i8_le(self.signed8);
+        writer.write_i16_le(self.signed16);
+        writer.write_i32_le(self.signed32);
+        writer.write_i64_le(self.signed64);
+        writer.write_i128_le(self.signed128);
+        writer.write_isize_le(self.signed_size);
+
+        writer.write_f16_le(self.float16);
+        writer.write_f32_le(self.float32);
+        writer.write_f64_le(self.float64);
+
+        writer.write_bytes_le(&self.raw_data);
+
+        writer.to_vec()
+    }
+
+    pub fn to_ne_bytes(&self) -> Vec<u8> {
+        let mut writer = FastByteWriter::new();
+        writer.write_u8_ne(self.unsigned8);
+        writer.write_u16_ne(self.unsigned16);
+        writer.write_u32_ne(self.unsigned32);
+        writer.write_u64_ne(self.unsigned64);
+        writer.write_u128_ne(self.unsigned128);
+        writer.write_usize_ne(self.unsigned_size);
+
+        writer.write_i8_ne(self.signed8);
+        writer.write_i16_ne(self.signed16);
+        writer.write_i32_ne(self.signed32);
+        writer.write_i64_ne(self.signed64);
+        writer.write_i128_ne(self.signed128);
+        writer.write_isize_ne(self.signed_size);
+
+        writer.write_f16_ne(self.float16);
+        writer.write_f32_ne(self.float32);
+        writer.write_f64_ne(self.float64);
+
+        writer.write_bytes_ne(&self.raw_data);
+
+        writer.to_vec()
+    }
 }
 ```
 ### Unsafe Functions
