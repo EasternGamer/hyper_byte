@@ -21,6 +21,10 @@ impl ByteWriter for FastByteWriter {
     fn as_mut_vec(&mut self) -> &mut Vec<u8> {
         self.byte_array.as_mut()
     }
+    
+    fn ensure_capacity(&mut self, capacity: usize) {
+        self.byte_array.reserve(capacity)
+    }
 }
 impl BigEndianByteWriter for FastByteWriter {}
 impl LittleEndianByteWriter for FastByteWriter {}
@@ -91,6 +95,10 @@ impl ByteWriter for NetworkWriter {
     fn as_mut_vec(&mut self) -> &mut Vec<u8> {
         self.byte_array.as_mut()
     }
+
+    fn ensure_capacity(&mut self, capacity: usize) {
+        self.byte_array.reserve(capacity)
+    }
 }
 impl BigEndianByteWriter for NetworkWriter {}
 
@@ -159,6 +167,10 @@ impl ByteWriter for LittleWriter {
     fn as_mut_vec(&mut self) -> &mut Vec<u8> {
         self.byte_array.as_mut()
     }
+
+    fn ensure_capacity(&mut self, capacity: usize) {
+        self.byte_array.reserve(capacity)
+    }
 }
 impl LittleEndianByteWriter for LittleWriter {}
 
@@ -226,6 +238,10 @@ impl ByteWriter for NativeWriter {
 
     fn as_mut_vec(&mut self) -> &mut Vec<u8> {
         self.byte_array.as_mut()
+    }
+
+    fn ensure_capacity(&mut self, capacity: usize) {
+        self.byte_array.reserve(capacity)
     }
 }
 impl NativeEndianByteWriter for NativeWriter {}

@@ -1,6 +1,6 @@
 [package]
 name = "hyper_byte"
-version = "0.3.0"
+version = "0.3.1"
 license = "MIT"
 authors = ["EasternGamer"]
 edition = "2021"

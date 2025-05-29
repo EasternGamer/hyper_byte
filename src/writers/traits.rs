@@ -67,6 +67,8 @@ pub trait ByteWriter {
     /// assert_eq!(reader.read_u16_be(), my_simple_tuple.1);
     /// ```
     fn as_mut_vec(&mut self) -> &mut Vec<u8>;
+    
+    fn ensure_capacity(&mut self, capacity : usize);
 }
 
 pub trait NativeEndianByteWriter: ByteWriter {
