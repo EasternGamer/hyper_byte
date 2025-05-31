@@ -1,6 +1,6 @@
+use std::ops::{Deref, DerefMut};
 use crate::writers::traits::*;
 
-#[repr(transparent)]
 pub struct FastByteWriter {
     byte_array: Vec<u8>,
 }
@@ -23,9 +23,35 @@ impl ByteWriter for FastByteWriter {
         self.byte_array.as_mut()
     }
 }
+
 impl BigEndianByteWriter for FastByteWriter {}
 impl LittleEndianByteWriter for FastByteWriter {}
 impl NativeEndianByteWriter for FastByteWriter {}
+
+impl AsRef<Vec<u8>> for FastByteWriter {
+    fn as_ref(&self) -> &Vec<u8> {
+        &self.byte_array
+    }
+}
+impl AsMut<Vec<u8>> for FastByteWriter {
+    fn as_mut(&mut self) -> &mut Vec<u8> {
+        self.byte_array.as_mut()
+    }
+}
+
+impl Deref for FastByteWriter {
+    type Target = Vec<u8>;
+
+    fn deref(&self) -> &Self::Target {
+        self.byte_array.as_ref()
+    }
+}
+
+impl DerefMut for FastByteWriter {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.byte_array.as_mut()
+    }
+}
 
 impl FastByteWriter {
     /// Simple and fast byte writer, backed by a `Vec<u8>`
@@ -71,7 +97,6 @@ impl FastByteWriter {
     }
 }
 
-#[repr(transparent)]
 pub struct NetworkWriter {
     byte_array: Vec<u8>,
 }
@@ -95,6 +120,31 @@ impl ByteWriter for NetworkWriter {
     }
 }
 impl BigEndianByteWriter for NetworkWriter {}
+
+impl AsRef<Vec<u8>> for NetworkWriter {
+    fn as_ref(&self) -> &Vec<u8> {
+        &self.byte_array
+    }
+}
+impl AsMut<Vec<u8>> for NetworkWriter {
+    fn as_mut(&mut self) -> &mut Vec<u8> {
+        self.byte_array.as_mut()
+    }
+}
+
+impl Deref for NetworkWriter {
+    type Target = Vec<u8>;
+
+    fn deref(&self) -> &Self::Target {
+        self.byte_array.as_ref()
+    }
+}
+
+impl DerefMut for NetworkWriter {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.byte_array.as_mut()
+    }
+}
 
 impl NetworkWriter {
     /// Simple byte writer
@@ -140,7 +190,6 @@ impl NetworkWriter {
     }
 }
 
-#[repr(transparent)]
 pub struct LittleWriter {
     byte_array: Vec<u8>,
 }
@@ -164,6 +213,32 @@ impl ByteWriter for LittleWriter {
     }
 }
 impl LittleEndianByteWriter for LittleWriter {}
+
+impl AsRef<Vec<u8>> for LittleWriter {
+    fn as_ref(&self) -> &Vec<u8> {
+        &self.byte_array
+    }
+}
+impl AsMut<Vec<u8>> for LittleWriter {
+    fn as_mut(&mut self) -> &mut Vec<u8> {
+        self.byte_array.as_mut()
+    }
+}
+
+impl Deref for LittleWriter {
+    type Target = Vec<u8>;
+
+    fn deref(&self) -> &Self::Target {
+        self.byte_array.as_ref()
+    }
+}
+
+impl DerefMut for LittleWriter {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.byte_array.as_mut()
+    }
+}
+
 
 impl LittleWriter {
     /// Simple byte writer
@@ -209,7 +284,6 @@ impl LittleWriter {
     }
 }
 
-#[repr(transparent)]
 pub struct NativeWriter {
     byte_array: Vec<u8>,
 }
@@ -233,6 +307,31 @@ impl ByteWriter for NativeWriter {
     }
 }
 impl NativeEndianByteWriter for NativeWriter {}
+
+impl AsRef<Vec<u8>> for NativeWriter {
+    fn as_ref(&self) -> &Vec<u8> {
+        &self.byte_array
+    }
+}
+impl AsMut<Vec<u8>> for NativeWriter {
+    fn as_mut(&mut self) -> &mut Vec<u8> {
+        self.byte_array.as_mut()
+    }
+}
+
+impl Deref for NativeWriter {
+    type Target = Vec<u8>;
+
+    fn deref(&self) -> &Self::Target {
+        self.byte_array.as_ref()
+    }
+}
+
+impl DerefMut for NativeWriter {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.byte_array.as_mut()
+    }
+}
 
 impl NativeWriter {
     /// Simple byte writer
