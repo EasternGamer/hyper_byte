@@ -1,5 +1,6 @@
 use crate::writers::traits::*;
 
+#[repr(transparent)]
 pub struct FastByteWriter {
     byte_array: Vec<u8>,
 }
@@ -20,10 +21,6 @@ impl ByteWriter for FastByteWriter {
 
     fn as_mut_vec(&mut self) -> &mut Vec<u8> {
         self.byte_array.as_mut()
-    }
-    
-    fn ensure_capacity(&mut self, capacity: usize) {
-        self.byte_array.reserve(capacity)
     }
 }
 impl BigEndianByteWriter for FastByteWriter {}
@@ -74,6 +71,7 @@ impl FastByteWriter {
     }
 }
 
+#[repr(transparent)]
 pub struct NetworkWriter {
     byte_array: Vec<u8>,
 }
@@ -94,10 +92,6 @@ impl ByteWriter for NetworkWriter {
 
     fn as_mut_vec(&mut self) -> &mut Vec<u8> {
         self.byte_array.as_mut()
-    }
-
-    fn ensure_capacity(&mut self, capacity: usize) {
-        self.byte_array.reserve(capacity)
     }
 }
 impl BigEndianByteWriter for NetworkWriter {}
@@ -146,6 +140,7 @@ impl NetworkWriter {
     }
 }
 
+#[repr(transparent)]
 pub struct LittleWriter {
     byte_array: Vec<u8>,
 }
@@ -166,10 +161,6 @@ impl ByteWriter for LittleWriter {
 
     fn as_mut_vec(&mut self) -> &mut Vec<u8> {
         self.byte_array.as_mut()
-    }
-
-    fn ensure_capacity(&mut self, capacity: usize) {
-        self.byte_array.reserve(capacity)
     }
 }
 impl LittleEndianByteWriter for LittleWriter {}
@@ -218,6 +209,7 @@ impl LittleWriter {
     }
 }
 
+#[repr(transparent)]
 pub struct NativeWriter {
     byte_array: Vec<u8>,
 }
@@ -238,10 +230,6 @@ impl ByteWriter for NativeWriter {
 
     fn as_mut_vec(&mut self) -> &mut Vec<u8> {
         self.byte_array.as_mut()
-    }
-
-    fn ensure_capacity(&mut self, capacity: usize) {
-        self.byte_array.reserve(capacity)
     }
 }
 impl NativeEndianByteWriter for NativeWriter {}
