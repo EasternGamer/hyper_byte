@@ -16,6 +16,9 @@ use half::f16;
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_u8_be;
 ///
 /// let mut slice = [0u8; 16];
@@ -32,6 +35,7 @@ use half::f16;
 ///     *index += 1;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_u8_be(bytes: &[u8]) -> u8 {
@@ -48,6 +52,9 @@ pub unsafe fn read_u8_be(bytes: &[u8]) -> u8 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_u16_be;
 ///
 /// let slice = [0u8; 16];
@@ -64,6 +71,7 @@ pub unsafe fn read_u8_be(bytes: &[u8]) -> u8 {
 ///     *index += 2;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_u16_be(bytes: &[u8]) -> u16 {
@@ -80,6 +88,9 @@ pub unsafe fn read_u16_be(bytes: &[u8]) -> u16 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_u32_be;
 ///
 /// let slice = [0u8; 16];
@@ -96,6 +107,7 @@ pub unsafe fn read_u16_be(bytes: &[u8]) -> u16 {
 ///     *index += 4;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_u32_be(bytes: &[u8]) -> u32 {
@@ -112,6 +124,9 @@ pub unsafe fn read_u32_be(bytes: &[u8]) -> u32 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_u64_be;
 ///
 /// let slice = [0u8; 16];
@@ -128,6 +143,7 @@ pub unsafe fn read_u32_be(bytes: &[u8]) -> u32 {
 ///     *index += 8;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_u64_be(bytes: &[u8]) -> u64 {
@@ -144,6 +160,9 @@ pub unsafe fn read_u64_be(bytes: &[u8]) -> u64 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_u128_be;
 ///
 /// let slice = [0u8; 16];
@@ -160,6 +179,7 @@ pub unsafe fn read_u64_be(bytes: &[u8]) -> u64 {
 ///     *index += 16;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_u128_be(bytes: &[u8]) -> u128 {
@@ -176,6 +196,9 @@ pub unsafe fn read_u128_be(bytes: &[u8]) -> u128 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_usize_be;
 ///
 /// let slice = [0u8; 16];
@@ -192,6 +215,7 @@ pub unsafe fn read_u128_be(bytes: &[u8]) -> u128 {
 ///     *index += size_of::<usize>();
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_usize_be(bytes: &[u8]) -> usize {
@@ -208,6 +232,9 @@ pub unsafe fn read_usize_be(bytes: &[u8]) -> usize {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_i8_be;
 ///
 /// let slice = [0u8; 16];
@@ -224,6 +251,7 @@ pub unsafe fn read_usize_be(bytes: &[u8]) -> usize {
 ///     *index += 1;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_i8_be(bytes: &[u8]) -> i8 {
@@ -240,6 +268,9 @@ pub unsafe fn read_i8_be(bytes: &[u8]) -> i8 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_i16_be;
 ///
 /// let slice = [0u8; 16];
@@ -256,6 +287,7 @@ pub unsafe fn read_i8_be(bytes: &[u8]) -> i8 {
 ///     *index += 2;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_i16_be(bytes: &[u8]) -> i16 {
@@ -272,6 +304,9 @@ pub unsafe fn read_i16_be(bytes: &[u8]) -> i16 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_i32_be;
 ///
 /// let slice = [0u8; 16];
@@ -288,6 +323,7 @@ pub unsafe fn read_i16_be(bytes: &[u8]) -> i16 {
 ///     *index += 4;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_i32_be(bytes: &[u8]) -> i32 {
@@ -304,6 +340,9 @@ pub unsafe fn read_i32_be(bytes: &[u8]) -> i32 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_i64_be;
 ///
 /// let slice = [0u8; 16];
@@ -320,6 +359,7 @@ pub unsafe fn read_i32_be(bytes: &[u8]) -> i32 {
 ///     *index += 8;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_i64_be(bytes: &[u8]) -> i64 {
@@ -336,6 +376,9 @@ pub unsafe fn read_i64_be(bytes: &[u8]) -> i64 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_i128_be;
 ///
 /// let slice = [0u8; 16];
@@ -352,6 +395,7 @@ pub unsafe fn read_i64_be(bytes: &[u8]) -> i64 {
 ///     *index += 16;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_i128_be(bytes: &[u8]) -> i128 {
@@ -368,6 +412,9 @@ pub unsafe fn read_i128_be(bytes: &[u8]) -> i128 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_isize_be;
 ///
 /// let slice = [0u8; 16];
@@ -384,6 +431,7 @@ pub unsafe fn read_i128_be(bytes: &[u8]) -> i128 {
 ///     *index += size_of::<isize>();
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_isize_be(bytes: &[u8]) -> isize {
@@ -401,6 +449,9 @@ pub unsafe fn read_isize_be(bytes: &[u8]) -> isize {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use half::f16;
 /// use hyper_byte::read_f16_be;
 ///
@@ -418,6 +469,7 @@ pub unsafe fn read_isize_be(bytes: &[u8]) -> isize {
 ///     *index += 2;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_f16_be(bytes: &[u8]) -> f16 {
@@ -434,6 +486,9 @@ pub unsafe fn read_f16_be(bytes: &[u8]) -> f16 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_f32_be;
 ///
 /// let slice = [0u8; 16];
@@ -450,6 +505,7 @@ pub unsafe fn read_f16_be(bytes: &[u8]) -> f16 {
 ///     *index += 4;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_f32_be(bytes: &[u8]) -> f32 {
@@ -466,6 +522,9 @@ pub unsafe fn read_f32_be(bytes: &[u8]) -> f32 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_f64_be;
 ///
 /// let slice = [0u8; 16];
@@ -482,6 +541,7 @@ pub unsafe fn read_f32_be(bytes: &[u8]) -> f32 {
 ///     *index += 8;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_f64_be(bytes: &[u8]) -> f64 {
@@ -498,6 +558,9 @@ pub unsafe fn read_f64_be(bytes: &[u8]) -> f64 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_u8_le;
 ///
 /// let mut slice = [0u8; 16];
@@ -514,6 +577,7 @@ pub unsafe fn read_f64_be(bytes: &[u8]) -> f64 {
 ///     *index += 1;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_u8_le(bytes: &[u8]) -> u8 {
@@ -530,6 +594,9 @@ pub unsafe fn read_u8_le(bytes: &[u8]) -> u8 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_u16_le;
 ///
 /// let slice = [0u8; 16];
@@ -546,6 +613,7 @@ pub unsafe fn read_u8_le(bytes: &[u8]) -> u8 {
 ///     *index += 2;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_u16_le(bytes: &[u8]) -> u16 {
@@ -562,6 +630,9 @@ pub unsafe fn read_u16_le(bytes: &[u8]) -> u16 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_u32_le;
 ///
 /// let slice = [0u8; 16];
@@ -578,6 +649,7 @@ pub unsafe fn read_u16_le(bytes: &[u8]) -> u16 {
 ///     *index += 4;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_u32_le(bytes: &[u8]) -> u32 {
@@ -594,6 +666,9 @@ pub unsafe fn read_u32_le(bytes: &[u8]) -> u32 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_u64_le;
 ///
 /// let slice = [0u8; 16];
@@ -610,6 +685,7 @@ pub unsafe fn read_u32_le(bytes: &[u8]) -> u32 {
 ///     *index += 8;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_u64_le(bytes: &[u8]) -> u64 {
@@ -626,6 +702,9 @@ pub unsafe fn read_u64_le(bytes: &[u8]) -> u64 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_u128_le;
 ///
 /// let slice = [0u8; 16];
@@ -642,6 +721,7 @@ pub unsafe fn read_u64_le(bytes: &[u8]) -> u64 {
 ///     *index += 16;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_u128_le(bytes: &[u8]) -> u128 {
@@ -658,6 +738,9 @@ pub unsafe fn read_u128_le(bytes: &[u8]) -> u128 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_usize_le;
 ///
 /// let slice = [0u8; 16];
@@ -674,6 +757,7 @@ pub unsafe fn read_u128_le(bytes: &[u8]) -> u128 {
 ///     *index += size_of::<usize>();
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_usize_le(bytes: &[u8]) -> usize {
@@ -690,6 +774,9 @@ pub unsafe fn read_usize_le(bytes: &[u8]) -> usize {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_i8_le;
 ///
 /// let slice = [0u8; 16];
@@ -706,6 +793,7 @@ pub unsafe fn read_usize_le(bytes: &[u8]) -> usize {
 ///     *index += 1;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_i8_le(bytes: &[u8]) -> i8 {
@@ -722,6 +810,9 @@ pub unsafe fn read_i8_le(bytes: &[u8]) -> i8 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_i16_le;
 ///
 /// let slice = [0u8; 16];
@@ -738,6 +829,7 @@ pub unsafe fn read_i8_le(bytes: &[u8]) -> i8 {
 ///     *index += 2;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_i16_le(bytes: &[u8]) -> i16 {
@@ -754,6 +846,9 @@ pub unsafe fn read_i16_le(bytes: &[u8]) -> i16 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_i32_le;
 ///
 /// let slice = [0u8; 16];
@@ -770,6 +865,7 @@ pub unsafe fn read_i16_le(bytes: &[u8]) -> i16 {
 ///     *index += 4;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_i32_le(bytes: &[u8]) -> i32 {
@@ -786,6 +882,9 @@ pub unsafe fn read_i32_le(bytes: &[u8]) -> i32 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_i64_le;
 ///
 /// let slice = [0u8; 16];
@@ -802,6 +901,7 @@ pub unsafe fn read_i32_le(bytes: &[u8]) -> i32 {
 ///     *index += 8;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_i64_le(bytes: &[u8]) -> i64 {
@@ -818,6 +918,9 @@ pub unsafe fn read_i64_le(bytes: &[u8]) -> i64 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_i128_le;
 ///
 /// let slice = [0u8; 16];
@@ -834,6 +937,7 @@ pub unsafe fn read_i64_le(bytes: &[u8]) -> i64 {
 ///     *index += 16;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_i128_le(bytes: &[u8]) -> i128 {
@@ -850,6 +954,9 @@ pub unsafe fn read_i128_le(bytes: &[u8]) -> i128 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_isize_le;
 ///
 /// let slice = [0u8; 16];
@@ -866,6 +973,7 @@ pub unsafe fn read_i128_le(bytes: &[u8]) -> i128 {
 ///     *index += size_of::<isize>();
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_isize_le(bytes: &[u8]) -> isize {
@@ -883,6 +991,9 @@ pub unsafe fn read_isize_le(bytes: &[u8]) -> isize {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use half::f16;
 /// use hyper_byte::read_f16_le;
 ///
@@ -900,6 +1011,7 @@ pub unsafe fn read_isize_le(bytes: &[u8]) -> isize {
 ///     *index += 2;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_f16_le(bytes: &[u8]) -> f16 {
@@ -916,6 +1028,9 @@ pub unsafe fn read_f16_le(bytes: &[u8]) -> f16 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_f32_le;
 ///
 /// let slice = [0u8; 16];
@@ -932,6 +1047,7 @@ pub unsafe fn read_f16_le(bytes: &[u8]) -> f16 {
 ///     *index += 4;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_f32_le(bytes: &[u8]) -> f32 {
@@ -948,6 +1064,9 @@ pub unsafe fn read_f32_le(bytes: &[u8]) -> f32 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_f64_le;
 ///
 /// let slice = [0u8; 16];
@@ -964,6 +1083,7 @@ pub unsafe fn read_f32_le(bytes: &[u8]) -> f32 {
 ///     *index += 8;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_f64_le(bytes: &[u8]) -> f64 {
@@ -980,6 +1100,9 @@ pub unsafe fn read_f64_le(bytes: &[u8]) -> f64 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_u8_ne;
 ///
 /// let mut slice = [0u8; 16];
@@ -996,6 +1119,7 @@ pub unsafe fn read_f64_le(bytes: &[u8]) -> f64 {
 ///     *index += 1;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_u8_ne(bytes: &[u8]) -> u8 {
@@ -1012,6 +1136,9 @@ pub unsafe fn read_u8_ne(bytes: &[u8]) -> u8 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_u16_ne;
 ///
 /// let slice = [0u8; 16];
@@ -1028,6 +1155,7 @@ pub unsafe fn read_u8_ne(bytes: &[u8]) -> u8 {
 ///     *index += 2;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_u16_ne(bytes: &[u8]) -> u16 {
@@ -1044,6 +1172,9 @@ pub unsafe fn read_u16_ne(bytes: &[u8]) -> u16 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_u32_ne;
 ///
 /// let slice = [0u8; 16];
@@ -1060,6 +1191,7 @@ pub unsafe fn read_u16_ne(bytes: &[u8]) -> u16 {
 ///     *index += 4;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_u32_ne(bytes: &[u8]) -> u32 {
@@ -1076,6 +1208,9 @@ pub unsafe fn read_u32_ne(bytes: &[u8]) -> u32 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_u64_ne;
 ///
 /// let slice = [0u8; 16];
@@ -1092,6 +1227,7 @@ pub unsafe fn read_u32_ne(bytes: &[u8]) -> u32 {
 ///     *index += 8;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_u64_ne(bytes: &[u8]) -> u64 {
@@ -1108,6 +1244,9 @@ pub unsafe fn read_u64_ne(bytes: &[u8]) -> u64 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_u128_ne;
 ///
 /// let slice = [0u8; 16];
@@ -1124,6 +1263,7 @@ pub unsafe fn read_u64_ne(bytes: &[u8]) -> u64 {
 ///     *index += 16;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_u128_ne(bytes: &[u8]) -> u128 {
@@ -1140,6 +1280,9 @@ pub unsafe fn read_u128_ne(bytes: &[u8]) -> u128 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_usize_ne;
 ///
 /// let slice = [0u8; 16];
@@ -1156,6 +1299,7 @@ pub unsafe fn read_u128_ne(bytes: &[u8]) -> u128 {
 ///     *index += size_of::<usize>();
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_usize_ne(bytes: &[u8]) -> usize {
@@ -1172,6 +1316,9 @@ pub unsafe fn read_usize_ne(bytes: &[u8]) -> usize {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_i8_ne;
 ///
 /// let slice = [0u8; 16];
@@ -1188,6 +1335,7 @@ pub unsafe fn read_usize_ne(bytes: &[u8]) -> usize {
 ///     *index += 1;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_i8_ne(bytes: &[u8]) -> i8 {
@@ -1204,6 +1352,9 @@ pub unsafe fn read_i8_ne(bytes: &[u8]) -> i8 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_i16_ne;
 ///
 /// let slice = [0u8; 16];
@@ -1220,6 +1371,7 @@ pub unsafe fn read_i8_ne(bytes: &[u8]) -> i8 {
 ///     *index += 2;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_i16_ne(bytes: &[u8]) -> i16 {
@@ -1236,6 +1388,9 @@ pub unsafe fn read_i16_ne(bytes: &[u8]) -> i16 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_i32_ne;
 ///
 /// let slice = [0u8; 16];
@@ -1252,6 +1407,7 @@ pub unsafe fn read_i16_ne(bytes: &[u8]) -> i16 {
 ///     *index += 4;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_i32_ne(bytes: &[u8]) -> i32 {
@@ -1268,6 +1424,9 @@ pub unsafe fn read_i32_ne(bytes: &[u8]) -> i32 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_i64_ne;
 ///
 /// let slice = [0u8; 16];
@@ -1284,6 +1443,7 @@ pub unsafe fn read_i32_ne(bytes: &[u8]) -> i32 {
 ///     *index += 8;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_i64_ne(bytes: &[u8]) -> i64 {
@@ -1300,6 +1460,9 @@ pub unsafe fn read_i64_ne(bytes: &[u8]) -> i64 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_i128_ne;
 ///
 /// let slice = [0u8; 16];
@@ -1316,6 +1479,7 @@ pub unsafe fn read_i64_ne(bytes: &[u8]) -> i64 {
 ///     *index += 16;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_i128_ne(bytes: &[u8]) -> i128 {
@@ -1332,6 +1496,9 @@ pub unsafe fn read_i128_ne(bytes: &[u8]) -> i128 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_isize_ne;
 ///
 /// let slice = [0u8; 16];
@@ -1348,6 +1515,7 @@ pub unsafe fn read_i128_ne(bytes: &[u8]) -> i128 {
 ///     *index += size_of::<isize>();
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_isize_ne(bytes: &[u8]) -> isize {
@@ -1365,6 +1533,9 @@ pub unsafe fn read_isize_ne(bytes: &[u8]) -> isize {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use half::f16;
 /// use hyper_byte::read_f16_ne;
 ///
@@ -1382,6 +1553,7 @@ pub unsafe fn read_isize_ne(bytes: &[u8]) -> isize {
 ///     *index += 2;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_f16_ne(bytes: &[u8]) -> f16 {
@@ -1398,6 +1570,9 @@ pub unsafe fn read_f16_ne(bytes: &[u8]) -> f16 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_f32_ne;
 ///
 /// let slice = [0u8; 16];
@@ -1414,6 +1589,7 @@ pub unsafe fn read_f16_ne(bytes: &[u8]) -> f16 {
 ///     *index += 4;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_f32_ne(bytes: &[u8]) -> f32 {
@@ -1430,6 +1606,9 @@ pub unsafe fn read_f32_ne(bytes: &[u8]) -> f32 {
 ///
 /// # Examples
 /// ```
+/// # #[cfg(miri)] fn main() {}
+/// # #[cfg(not(miri))]
+/// # fn main() {
 /// use hyper_byte::read_f64_ne;
 ///
 /// let slice = [0u8; 16];
@@ -1446,6 +1625,7 @@ pub unsafe fn read_f32_ne(bytes: &[u8]) -> f32 {
 ///     *index += 8;
 ///     third_value
 /// }
+/// # }
 /// ```
 #[inline(always)]
 pub unsafe fn read_f64_ne(bytes: &[u8]) -> f64 {
@@ -2304,7 +2484,6 @@ mod tests {
     }
 
     // Has bound checks for every indexing operation
-    #[no_mangle]
     #[inline(always)]
     pub fn read_f64_ne_indexing(bytes: &[u8]) -> f64 {
         f64::from_ne_bytes([
@@ -2313,12 +2492,12 @@ mod tests {
     }
 
     // Has more branching and operations involved, and ultimately
-    #[no_mangle]
     #[inline(always)]
     pub fn read_f64_ne_ordinary(bytes: &[u8]) -> f64 {
         f64::from_ne_bytes(bytes.try_into().expect("Error!"))
     }
 
+    #[cfg_attr(miri, ignore)]
     #[test]
     fn my_bench_mark() {
         let my_value = hint::black_box(1000f64);

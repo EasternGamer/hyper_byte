@@ -23,8 +23,10 @@ impl ByteReader for FastByteReader<'_> {
     }
 
     unsafe fn advance(&mut self, advancement: usize, new_size: usize) {
-        self.byte_array =
-            &*slice_from_raw_parts(self.byte_array.as_ptr().add(advancement), new_size);
+        unsafe {
+            self.byte_array =
+                &*slice_from_raw_parts(self.byte_array.as_ptr().add(advancement), new_size);
+        }
     }
 }
 
@@ -72,8 +74,10 @@ impl ByteReader for NetworkReader<'_> {
     }
 
     unsafe fn advance(&mut self, advancement: usize, new_size: usize) {
-        self.byte_array =
-            &*slice_from_raw_parts(self.byte_array.as_ptr().add(advancement), new_size);
+        unsafe {
+            self.byte_array =
+                &*slice_from_raw_parts(self.byte_array.as_ptr().add(advancement), new_size);
+        }
     }
 }
 
@@ -119,8 +123,10 @@ impl ByteReader for LittleReader<'_> {
     }
 
     unsafe fn advance(&mut self, advancement: usize, new_size: usize) {
-        self.byte_array =
-            &*slice_from_raw_parts(self.byte_array.as_ptr().add(advancement), new_size);
+        unsafe {
+            self.byte_array =
+                &*slice_from_raw_parts(self.byte_array.as_ptr().add(advancement), new_size);
+        }
     }
 }
 
@@ -166,27 +172,29 @@ impl ByteReader for NativeReader<'_> {
     }
 
     unsafe fn advance(&mut self, advancement: usize, new_size: usize) {
-        self.byte_array =
-            &*slice_from_raw_parts(self.byte_array.as_ptr().add(advancement), new_size);
+        unsafe {
+            self.byte_array =
+                &*slice_from_raw_parts(self.byte_array.as_ptr().add(advancement), new_size);
+        }
     }
 }
 
 impl NativeEndianByteReader for NativeReader<'_> {}
 
-impl<'reader> NativeReader<'reader> {
-    /// Cheap byte readers, which does not hold your hand. If you mess up, it will panic.
-    ///
-    /// # Examples
-    /// ```
-    /// use hyper_byte::reader::LittleReader;
-    /// use hyper_byte::readers::traits::LittleEndianByteReader;
-    ///
-    /// let slice = [0u8; 32];
-    /// let mut readers = LittleReader::new(&slice);
-    /// let x = readers.read_f64_le();
-    /// let y = readers.read_f64_le();
-    /// ```
-    pub const fn new(byte_array: &'reader [u8]) -> Self {
-        Self { byte_array }
+    impl<'reader> NativeReader<'reader> {
+        /// Cheap byte readers, which does not hold your hand. If you mess up, it will panic.
+        ///
+        /// # Examples
+        /// ```
+        /// use hyper_byte::reader::LittleReader;
+        /// use hyper_byte::readers::traits::LittleEndianByteReader;
+        ///
+        /// let slice = [0u8; 32];
+        /// let mut readers = LittleReader::new(&slice);
+        /// let x = readers.read_f64_le();
+        /// let y = readers.read_f64_le();
+        /// ```
+        pub const fn new(byte_array: &'reader [u8]) -> Self {
+            Self { byte_array }
+        }
     }
-}
