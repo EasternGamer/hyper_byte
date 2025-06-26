@@ -46,7 +46,7 @@ pub unsafe fn read_f64_ne(bytes: &[u8]) -> f64 {
 }
 ```
 Benchmarking it is rather difficult since the compiler will do anything to optimize the call out completely (not run the code, I don't mean make it faster).
-However, instructions don't lie, and I did manage to create a benchmark, present around line 2322 in [lib.rs](src/lib.rs#L2322-L2351).<br/>
+However, instructions don't lie, and I did manage to create a benchmark, present around line 2502 in [lib.rs](src/lib.rs#L2502-L2530).<br/>
 In [Compiler Explorer](https://rust.godbolt.org/z/PfhWzGnnG), you can also see for yourself the instructions for each function.
 
 Running it on my machine, in debug mode, it is around 150% to 200% faster than `try_into`. In release mode, it is closer to only 20% faster.
@@ -239,3 +239,6 @@ pub fn read_u16_be(array : &[u8], index: &mut usize) -> u16 {
     }
 }
 ```
+
+## Disclaimer
+Most of the core code used in this library comes directly from Rust's own library, such as `*(bytes.as_ptr() as *const [u8; 8])`. This is effectively what try_into is, except without the runtime checking and result capture. It is therefor super-unsafe if not used correctly. This code is far from original.
