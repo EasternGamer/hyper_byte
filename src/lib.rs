@@ -2,6 +2,7 @@ pub mod reader;
 pub mod readers;
 pub mod writer;
 pub mod writers;
+mod hyper_stream;
 
 #[cfg(feature = "half")]
 use half::f16;
@@ -28,7 +29,7 @@ use half::f16;
 /// let second_value = unsafe { read_u8_be(&slice[0..0]) };
 ///
 ///
-/// pub fn read_u8_safe_be(array: &[u8], index: &mut usize) -> u16 {
+/// pub fn read_u8_safe_be(array: &[u8], index: &mut usize) -> u8 {
 ///     // "SAFE" because even if the array is not of this length,
 ///     // it will still at least panic and not cause undefined behaviour
 ///     let third_value = unsafe { read_u8_be(&array[*index..(*index+1)]) };
@@ -570,7 +571,7 @@ pub unsafe fn read_f64_be(bytes: &[u8]) -> f64 {
 /// let second_value = unsafe { read_u8_le(&slice[0..0]) };
 ///
 ///
-/// pub fn read_u8_safe_le(array: &[u8], index: &mut usize) -> u16 {
+/// pub fn read_u8_safe_le(array: &[u8], index: &mut usize) -> u8 {
 ///     // "SAFE" because even if the array is not of this length,
 ///     // it will still at least panic and not cause undefined behaviour
 ///     let third_value = unsafe { read_u8_le(&array[*index..(*index+1)]) };
@@ -1112,7 +1113,7 @@ pub unsafe fn read_f64_le(bytes: &[u8]) -> f64 {
 /// let second_value = unsafe { read_u8_ne(&slice[0..0]) };
 ///
 ///
-/// pub fn read_u8_safe_ne(array: &[u8], index: &mut usize) -> u16 {
+/// pub fn read_u8_safe_ne(array: &[u8], index: &mut usize) -> u8 {
 ///     // "SAFE" because even if the array is not of this length,
 ///     // it will still at least panic and not cause undefined behaviour
 ///     let third_value = unsafe { read_u8_ne(&array[*index..(*index+1)]) };
@@ -1635,6 +1636,7 @@ pub unsafe fn read_f64_ne(bytes: &[u8]) -> f64 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::hyper_stream::HyperStream;
     use crate::reader::FastByteReader;
     use crate::readers::traits::*;
     use crate::writer::FastByteWriter;
@@ -2092,105 +2094,143 @@ mod tests {
     }
 
     impl MyTestStruct {
-        pub fn to_be_bytes(&self) -> Vec<u8> {
-            let mut writer = FastByteWriter::new();
-            writer.write_u8_be(self.unsigned8);
-            writer.write_u16_be(self.unsigned16);
-            writer.write_u32_be(self.unsigned32);
-            writer.write_u64_be(self.unsigned64);
-            writer.write_u128_be(self.unsigned128);
-            writer.write_usize_be(self.unsigned_size);
-
-            writer.write_i8_be(self.signed8);
-            writer.write_i16_be(self.signed16);
-            writer.write_i32_be(self.signed32);
-            writer.write_i64_be(self.signed64);
-            writer.write_i128_be(self.signed128);
-            writer.write_isize_be(self.signed_size);
-
-            writer.write_f16_be(self.float16);
-            writer.write_f32_be(self.float32);
-            writer.write_f64_be(self.float64);
-
-            writer.write_bytes_be(&self.raw_data);
-
-            writer.to_vec()
+        pub fn from_be_bytes<T : BigEndianByteReader>(fast_reader: &mut T) -> Self {
+            Self {
+                unsigned8: fast_reader.read_u8_be(),
+                unsigned16: fast_reader.read_u16_be(),
+                unsigned32: fast_reader.read_u32_be(),
+                unsigned64: fast_reader.read_u64_be(),
+                unsigned128: fast_reader.read_u128_be(),
+                unsigned_size: fast_reader.read_usize_be(),
+                signed8: fast_reader.read_i8_be(),
+                signed16: fast_reader.read_i16_be(),
+                signed32: fast_reader.read_i32_be(),
+                signed64: fast_reader.read_i64_be(),
+                signed128: fast_reader.read_i128_be(),
+                signed_size: fast_reader.read_isize_be(),
+                float16: fast_reader.read_f16_be(),
+                float32: fast_reader.read_f32_be(),
+                float64: fast_reader.read_f64_be(),
+                raw_data: fast_reader.read_n_be(6),
+            }
         }
 
-        pub fn to_le_bytes(&self) -> Vec<u8> {
-            let mut writer = FastByteWriter::new();
-            writer.write_u8_le(self.unsigned8);
-            writer.write_u16_le(self.unsigned16);
-            writer.write_u32_le(self.unsigned32);
-            writer.write_u64_le(self.unsigned64);
-            writer.write_u128_le(self.unsigned128);
-            writer.write_usize_le(self.unsigned_size);
-
-            writer.write_i8_le(self.signed8);
-            writer.write_i16_le(self.signed16);
-            writer.write_i32_le(self.signed32);
-            writer.write_i64_le(self.signed64);
-            writer.write_i128_le(self.signed128);
-            writer.write_isize_le(self.signed_size);
-
-            writer.write_f16_le(self.float16);
-            writer.write_f32_le(self.float32);
-            writer.write_f64_le(self.float64);
-
-            writer.write_bytes_le(&self.raw_data);
-
-            writer.to_vec()
+        pub fn from_ne_bytes<T : NativeEndianByteReader>(fast_reader: &mut T) -> Self {
+            Self {
+                unsigned8: fast_reader.read_u8_ne(),
+                unsigned16: fast_reader.read_u16_ne(),
+                unsigned32: fast_reader.read_u32_ne(),
+                unsigned64: fast_reader.read_u64_ne(),
+                unsigned128: fast_reader.read_u128_ne(),
+                unsigned_size: fast_reader.read_usize_ne(),
+                signed8: fast_reader.read_i8_ne(),
+                signed16: fast_reader.read_i16_ne(),
+                signed32: fast_reader.read_i32_ne(),
+                signed64: fast_reader.read_i64_ne(),
+                signed128: fast_reader.read_i128_ne(),
+                signed_size: fast_reader.read_isize_ne(),
+                float16: fast_reader.read_f16_ne(),
+                float32: fast_reader.read_f32_ne(),
+                float64: fast_reader.read_f64_ne(),
+                raw_data: fast_reader.read_n_ne(6),
+            }
         }
 
-        pub fn to_ne_bytes(&self) -> Vec<u8> {
-            let mut writer = FastByteWriter::new();
-            writer.write_u8_ne(self.unsigned8);
-            writer.write_u16_ne(self.unsigned16);
-            writer.write_u32_ne(self.unsigned32);
-            writer.write_u64_ne(self.unsigned64);
-            writer.write_u128_ne(self.unsigned128);
-            writer.write_usize_ne(self.unsigned_size);
+        pub fn from_le_bytes<T : LittleEndianByteReader>(fast_reader: &mut T) -> Self {
+            Self {
+                unsigned8: fast_reader.read_u8_le(),
+                unsigned16: fast_reader.read_u16_le(),
+                unsigned32: fast_reader.read_u32_le(),
+                unsigned64: fast_reader.read_u64_le(),
+                unsigned128: fast_reader.read_u128_le(),
+                unsigned_size: fast_reader.read_usize_le(),
+                signed8: fast_reader.read_i8_le(),
+                signed16: fast_reader.read_i16_le(),
+                signed32: fast_reader.read_i32_le(),
+                signed64: fast_reader.read_i64_le(),
+                signed128: fast_reader.read_i128_le(),
+                signed_size: fast_reader.read_isize_le(),
+                float16: fast_reader.read_f16_le(),
+                float32: fast_reader.read_f32_le(),
+                float64: fast_reader.read_f64_le(),
+                raw_data: fast_reader.read_n_le(6),
+            }
+        }
+        pub fn to_be_bytes<T : BigEndianByteWriter>(&self, stream : &mut T) {
+            stream.write_u8_be(self.unsigned8);
+            stream.write_u16_be(self.unsigned16);
+            stream.write_u32_be(self.unsigned32);
+            stream.write_u64_be(self.unsigned64);
+            stream.write_u128_be(self.unsigned128);
+            stream.write_usize_be(self.unsigned_size);
 
-            writer.write_i8_ne(self.signed8);
-            writer.write_i16_ne(self.signed16);
-            writer.write_i32_ne(self.signed32);
-            writer.write_i64_ne(self.signed64);
-            writer.write_i128_ne(self.signed128);
-            writer.write_isize_ne(self.signed_size);
+            stream.write_i8_be(self.signed8);
+            stream.write_i16_be(self.signed16);
+            stream.write_i32_be(self.signed32);
+            stream.write_i64_be(self.signed64);
+            stream.write_i128_be(self.signed128);
+            stream.write_isize_be(self.signed_size);
 
-            writer.write_f16_ne(self.float16);
-            writer.write_f32_ne(self.float32);
-            writer.write_f64_ne(self.float64);
+            stream.write_f16_be(self.float16);
+            stream.write_f32_be(self.float32);
+            stream.write_f64_be(self.float64);
 
-            writer.write_bytes_ne(&self.raw_data);
+            stream.write_bytes_be(&self.raw_data);
+        }
 
-            writer.to_vec()
+        pub fn to_le_bytes<T : LittleEndianByteWriter>(&self, stream : &mut T) {
+            stream.write_u8_le(self.unsigned8);
+            stream.write_u16_le(self.unsigned16);
+            stream.write_u32_le(self.unsigned32);
+            stream.write_u64_le(self.unsigned64);
+            stream.write_u128_le(self.unsigned128);
+            stream.write_usize_le(self.unsigned_size);
+
+            stream.write_i8_le(self.signed8);
+            stream.write_i16_le(self.signed16);
+            stream.write_i32_le(self.signed32);
+            stream.write_i64_le(self.signed64);
+            stream.write_i128_le(self.signed128);
+            stream.write_isize_le(self.signed_size);
+
+            stream.write_f16_le(self.float16);
+            stream.write_f32_le(self.float32);
+            stream.write_f64_le(self.float64);
+
+            stream.write_bytes_le(&self.raw_data);
+        }
+
+        pub fn to_ne_bytes<T : NativeEndianByteWriter>(&self, stream : &mut T) {
+            stream.write_u8_ne(self.unsigned8);
+            stream.write_u16_ne(self.unsigned16);
+            stream.write_u32_ne(self.unsigned32);
+            stream.write_u64_ne(self.unsigned64);
+            stream.write_u128_ne(self.unsigned128);
+            stream.write_usize_ne(self.unsigned_size);
+
+            stream.write_i8_ne(self.signed8);
+            stream.write_i16_ne(self.signed16);
+            stream.write_i32_ne(self.signed32);
+            stream.write_i64_ne(self.signed64);
+            stream.write_i128_ne(self.signed128);
+            stream.write_isize_ne(self.signed_size);
+
+            stream.write_f16_ne(self.float16);
+            stream.write_f32_ne(self.float32);
+            stream.write_f64_ne(self.float64);
+
+            stream.write_bytes_ne(&self.raw_data);
         }
     }
 
     #[test]
     fn fast_reader_ne() {
+        let mut vector_data = FastByteWriter::new();
         let my_struct = MyTestStruct::default();
-        let vector_data = my_struct.to_ne_bytes();
+        my_struct.to_ne_bytes(&mut vector_data);
+
         let mut fast_reader = FastByteReader::new(&vector_data);
-        let parsed_struct = MyTestStruct {
-            unsigned8: fast_reader.read_u8_ne(),
-            unsigned16: fast_reader.read_u16_ne(),
-            unsigned32: fast_reader.read_u32_ne(),
-            unsigned64: fast_reader.read_u64_ne(),
-            unsigned128: fast_reader.read_u128_ne(),
-            unsigned_size: fast_reader.read_usize_ne(),
-            signed8: fast_reader.read_i8_ne(),
-            signed16: fast_reader.read_i16_ne(),
-            signed32: fast_reader.read_i32_ne(),
-            signed64: fast_reader.read_i64_ne(),
-            signed128: fast_reader.read_i128_ne(),
-            signed_size: fast_reader.read_isize_ne(),
-            float16: fast_reader.read_f16_ne(),
-            float32: fast_reader.read_f32_ne(),
-            float64: fast_reader.read_f64_ne(),
-            raw_data: fast_reader.read_n_ne(6),
-        };
+        let parsed_struct = MyTestStruct::from_ne_bytes(&mut fast_reader);
 
         assert_eq!(
             parsed_struct, my_struct,
@@ -2200,27 +2240,12 @@ mod tests {
 
     #[test]
     fn fast_reader_be() {
+        let mut vector_data = FastByteWriter::new();
         let my_struct = MyTestStruct::default();
-        let vector_data = my_struct.to_be_bytes();
+        my_struct.to_be_bytes(&mut vector_data);
+
         let mut fast_reader = FastByteReader::new(&vector_data);
-        let parsed_struct = MyTestStruct {
-            unsigned8: fast_reader.read_u8_be(),
-            unsigned16: fast_reader.read_u16_be(),
-            unsigned32: fast_reader.read_u32_be(),
-            unsigned64: fast_reader.read_u64_be(),
-            unsigned128: fast_reader.read_u128_be(),
-            unsigned_size: fast_reader.read_usize_be(),
-            signed8: fast_reader.read_i8_be(),
-            signed16: fast_reader.read_i16_be(),
-            signed32: fast_reader.read_i32_be(),
-            signed64: fast_reader.read_i64_be(),
-            signed128: fast_reader.read_i128_be(),
-            signed_size: fast_reader.read_isize_be(),
-            float16: fast_reader.read_f16_be(),
-            float32: fast_reader.read_f32_be(),
-            float64: fast_reader.read_f64_be(),
-            raw_data: fast_reader.read_n_be(6),
-        };
+        let parsed_struct = MyTestStruct::from_be_bytes(&mut fast_reader);
 
         assert_eq!(
             parsed_struct, my_struct,
@@ -2230,27 +2255,12 @@ mod tests {
 
     #[test]
     fn fast_reader_le() {
+        let mut vector_data = FastByteWriter::new();
         let my_struct = MyTestStruct::default();
-        let vector_data = my_struct.to_le_bytes();
+        my_struct.to_le_bytes(&mut vector_data);
+
         let mut fast_reader = FastByteReader::new(&vector_data);
-        let parsed_struct = MyTestStruct {
-            unsigned8: fast_reader.read_u8_le(),
-            unsigned16: fast_reader.read_u16_le(),
-            unsigned32: fast_reader.read_u32_le(),
-            unsigned64: fast_reader.read_u64_le(),
-            unsigned128: fast_reader.read_u128_le(),
-            unsigned_size: fast_reader.read_usize_le(),
-            signed8: fast_reader.read_i8_le(),
-            signed16: fast_reader.read_i16_le(),
-            signed32: fast_reader.read_i32_le(),
-            signed64: fast_reader.read_i64_le(),
-            signed128: fast_reader.read_i128_le(),
-            signed_size: fast_reader.read_isize_le(),
-            float16: fast_reader.read_f16_le(),
-            float32: fast_reader.read_f32_le(),
-            float64: fast_reader.read_f64_le(),
-            raw_data: fast_reader.read_n_le(6),
-        };
+        let parsed_struct = MyTestStruct::from_le_bytes(&mut fast_reader);
 
         assert_eq!(
             parsed_struct, my_struct,
@@ -2527,5 +2537,65 @@ mod tests {
         }
         let end = start.elapsed();
         println!("Ordinary: {result} - {}s", end.as_secs_f64());
+    }
+
+    #[test]
+    fn fast_stream_be() {
+        let my_struct = MyTestStruct::default();
+        let mut fast_stream = HyperStream::new(Vec::new());
+        my_struct.to_be_bytes(&mut fast_stream);
+        let parsed_struct = MyTestStruct::from_be_bytes(&mut fast_stream);
+        assert_eq!(
+            parsed_struct, my_struct,
+            "Converting using Native Endian Reader"
+        );
+
+
+        parsed_struct.to_be_bytes(&mut fast_stream);
+        let parsed_struct = MyTestStruct::from_be_bytes(&mut fast_stream);
+        assert_eq!(
+            parsed_struct, my_struct,
+            "Converting using Native Endian Reader"
+        );
+    }
+
+    #[test]
+    fn fast_stream_ne() {
+        let my_struct = MyTestStruct::default();
+        let mut fast_stream = HyperStream::new(Vec::new());
+        my_struct.to_ne_bytes(&mut fast_stream);
+        let parsed_struct = MyTestStruct::from_ne_bytes(&mut fast_stream);
+        assert_eq!(
+            parsed_struct, my_struct,
+            "Converting using Native Endian Reader"
+        );
+
+
+        parsed_struct.to_ne_bytes(&mut fast_stream);
+        let parsed_struct = MyTestStruct::from_ne_bytes(&mut fast_stream);
+        assert_eq!(
+            parsed_struct, my_struct,
+            "Converting using Native Endian Reader"
+        );
+    }
+
+    #[test]
+    fn fast_stream_le() {
+        let my_struct = MyTestStruct::default();
+        let mut fast_stream = HyperStream::new(Vec::new());
+        my_struct.to_le_bytes(&mut fast_stream);
+        let parsed_struct = MyTestStruct::from_le_bytes(&mut fast_stream);
+        assert_eq!(
+            parsed_struct, my_struct,
+            "Converting using Native Endian Reader"
+        );
+
+
+        parsed_struct.to_le_bytes(&mut fast_stream);
+        let parsed_struct = MyTestStruct::from_le_bytes(&mut fast_stream);
+        assert_eq!(
+            parsed_struct, my_struct,
+            "Converting using Native Endian Reader"
+        );
     }
 }

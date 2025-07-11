@@ -46,7 +46,7 @@ pub unsafe fn read_f64_ne(bytes: &[u8]) -> f64 {
 }
 ```
 Benchmarking it is rather difficult since the compiler will do anything to optimize the call out completely (not run the code, I don't mean make it faster).
-However, instructions don't lie, and I did manage to create a benchmark, present around line 2502 in [lib.rs](src/lib.rs#L2502-L2530).<br/>
+However, instructions don't lie, and I did manage to create a benchmark, present around line 2512 in [lib.rs](src/lib.rs#L2512-L2540).<br/>
 In [Compiler Explorer](https://rust.godbolt.org/z/PfhWzGnnG), you can also see for yourself the instructions for each function.
 
 Running it on my machine, in debug mode, it is around 150% to 200% faster than `try_into`. In release mode, it is closer to only 20% faster.
@@ -64,7 +64,9 @@ For writer traits it is:
 - [NativeEndianByteWriter](src/writers/traits.rs#L72-L475)
 - [LittleEndianByteWriter](src/writers/traits.rs#L477-L880)
 - [BigEndianByteWriter](src/writers/traits.rs#L882-L1285)
-- For writer implementations, there is [FastByteWriter](src/writer.rs#L3-L71), [NetworkWriter](src/writer.rs#L73-L139), [LittleWriter](src/writer.rs#L141-L207), and [NativeWriter](src/writer.rs#L209-L275).
+- For writer implementations, there is [FastByteWriter](src/writer.rs#L3-L71), [NetworkWriter](src/writer.rs#L73-L139), [LittleWriter](src/writer.rs#L141-L207), and [NativeWriter](src/writer.rs#L209-L275)
+
+For a combined experience, reading and writing, look to [NetworkStream](src/hyper-stream.rs#L8-L45), [LittleEndianStream](src/hyper-stream.rs#L47-L84),  [NativeStream](src/hyper-stream.rs#L86-L123), and [HyperStream](src/hyper-stream.rs#L125-L166).
 
 You might be wondering... why does FastByteReader and FastByteWriter exist? Well, it is to enable cursed functionality such as switching between different endianness.
 At the heart of it, all these implementations are incredibly simple to re-implement in your own structs, you can even do a hybrid reader/writer.
