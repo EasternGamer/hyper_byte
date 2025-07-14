@@ -1,6 +1,6 @@
 [package]
 name = "hyper_byte"
-version = "0.6.0"
+version = "0.6.5"
 license = "MIT"
 authors = ["EasternGamer"]
 edition = "2024"
@@ -21,9 +21,12 @@ debug = true
 
 [dependencies]
 half = { version = "2.6.0", optional = true }
+tokio = { version = "1.46.1", features = ["io-util"],  optional = true }
 
 [features]
 half = ["dep:half"]
+tokio = ["dep:tokio"]
 
 [dev-dependencies]
 half = "2.6.0"
+tokio = { version = "1.46.1", features = ["io-util"] }

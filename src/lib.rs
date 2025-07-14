@@ -2,7 +2,8 @@ pub mod reader;
 pub mod readers;
 pub mod writer;
 pub mod writers;
-mod hyper_stream;
+pub mod hyper_stream;
+pub mod extensions;
 
 #[cfg(feature = "half")]
 use half::f16;
