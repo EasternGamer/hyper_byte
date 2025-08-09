@@ -1,9 +1,13 @@
+#![cfg(feature = "std")]
+use std::io::Read;
+use std::mem::MaybeUninit;
+
+
 use crate::writers::traits::ByteWriter;
 #[cfg(feature = "tokio")]
 use tokio::io::AsyncReadExt;
 
-use std::io::Read;
-use std::mem::MaybeUninit;
+
 
 // Taken from nightly, to avoid nightly requirements
 #[inline(always)]

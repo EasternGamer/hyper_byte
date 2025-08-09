@@ -1,3 +1,5 @@
+use alloc::vec::Vec;
+
 use crate::readers::traits::{
     BigEndianByteReader, ByteReader, LittleEndianByteReader, NativeEndianByteReader,
 };

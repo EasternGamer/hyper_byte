@@ -1,3 +1,9 @@
+#![no_std]
+extern crate alloc;
+
+#[cfg(feature = "std")]
+extern crate std;
+
 pub mod reader;
 pub mod readers;
 pub mod writer;
@@ -1636,6 +1642,8 @@ pub unsafe fn read_f64_ne(bytes: &[u8]) -> f64 {
 
 #[cfg(test)]
 mod tests {
+    use alloc::vec;
+    use alloc::vec::Vec;
     use super::*;
     use crate::hyper_stream::HyperStream;
     use crate::reader::FastByteReader;
@@ -1643,7 +1651,11 @@ mod tests {
     use crate::writer::FastByteWriter;
     use crate::writers::traits::*;
     use half::f16;
-    use std::hint;
+    #[cfg(feature = "std")]
+    use core::hint;
+    #[cfg(feature = "std")]
+    use std::println;
+    #[cfg(feature = "std")]
     use std::time::Instant;
 
     #[test]
@@ -2508,7 +2520,8 @@ mod tests {
         f64::from_ne_bytes(bytes.try_into().expect("Error!"))
     }
 
-    #[cfg_attr(miri, ignore)]
+    #[cfg_attr(miri, ignore)] // takes too long if enabled
+    #[cfg(feature = "std")]
     #[test]
     fn my_bench_mark() {
         let my_value = hint::black_box(1000f64);

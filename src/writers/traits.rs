@@ -1,3 +1,4 @@
+use alloc::vec::Vec;
 #[cfg(feature = "half")]
 use half::f16;
 

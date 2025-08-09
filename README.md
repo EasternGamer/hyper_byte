@@ -46,7 +46,7 @@ pub unsafe fn read_f64_ne(bytes: &[u8]) -> f64 {
 }
 ```
 Benchmarking it is rather difficult since the compiler will do anything to optimize the call out completely (not run the code, I don't mean make it faster).
-However, instructions don't lie, and I did manage to create a benchmark, present around line 2512 in [lib.rs](src/lib.rs#L2512-L2540).<br/>
+However, instructions don't lie, and I did manage to create a benchmark, present around line 2512 in [lib.rs](src/lib.rs#L2526-L2554).<br/>
 In [Compiler Explorer](https://rust.godbolt.org/z/PfhWzGnnG), you can also see for yourself the instructions for each function.
 
 Running it on my machine, in debug mode, it is around 150% to 200% faster than `try_into`. In release mode, it is closer to only 20% faster.
@@ -55,18 +55,18 @@ Running it on my machine, in debug mode, it is around 150% to 200% faster than `
 
 ## Usage
 There are several-prebuilt readers/writers available, driven by traits.<br/>For reader traits it is:
-- [NativeEndianByteReader](src/readers/traits.rs#L140-L444)
-- [LittleEndianByteReader](src/readers/traits.rs#L446-L750)
-- [BigEndianByteReader](src/readers/traits.rs#L752-L1056)
-- For reader implementations, there is [FastByteReader](src/reader.rs#L4-L51), [NetworkReader](src/reader.rs#L53-L98), [LittleReader](src/reader.rs#L100-L145), and [NativeReader](src/reader.rs#L147-L193).
+- [NativeEndianByteReader](src/readers/traits.rs#L141-L445)
+- [LittleEndianByteReader](src/readers/traits.rs#L447-L751)
+- [BigEndianByteReader](src/readers/traits.rs#L753-L1057)
+- For reader implementations, there is [FastByteReader](src/reader.rs#L4-L52), [NetworkReader](src/reader.rs#L54-L99), [LittleReader](src/reader.rs#L101-L146), and [NativeReader](src/reader.rs#L148-L194).
 
 For writer traits it is:
-- [NativeEndianByteWriter](src/writers/traits.rs#L72-L475)
-- [LittleEndianByteWriter](src/writers/traits.rs#L477-L880)
-- [BigEndianByteWriter](src/writers/traits.rs#L882-L1285)
-- For writer implementations, there is [FastByteWriter](src/writer.rs#L3-L71), [NetworkWriter](src/writer.rs#L73-L139), [LittleWriter](src/writer.rs#L141-L207), and [NativeWriter](src/writer.rs#L209-L275)
+- [NativeEndianByteWriter](src/writers/traits.rs#L73-L476)
+- [LittleEndianByteWriter](src/writers/traits.rs#L478-L881)
+- [BigEndianByteWriter](src/writers/traits.rs#L883-L1286)
+- For writer implementations, there is [FastByteWriter](src/writer.rs#L4-L72), [NetworkWriter](src/writer.rs#L74-L140), [LittleWriter](src/writer.rs#L142-L208), and [NativeWriter](src/writer.rs#L210-L276)
 
-For a combined experience, reading and writing, look to [NetworkStream](src/hyper-stream.rs#L8-L45), [LittleEndianStream](src/hyper-stream.rs#L47-L84),  [NativeStream](src/hyper-stream.rs#L86-L123), and [HyperStream](src/hyper-stream.rs#L125-L166).
+For a combined experience, reading and writing, look to [NetworkStream](src/hyper-stream.rs#L10-L47), [LittleEndianStream](src/hyper-stream.rs#L49-L86),  [NativeStream](src/hyper-stream.rs#L88-L125), and [HyperStream](src/hyper-stream.rs#L127-L168).
 
 You might be wondering... why does FastByteReader and FastByteWriter exist? Well, it is to enable cursed functionality such as switching between different endianness.
 At the heart of it, all these implementations are incredibly simple to re-implement in your own structs, you can even do a hybrid reader/writer.

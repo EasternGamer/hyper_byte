@@ -1,5 +1,5 @@
+use core::ptr::slice_from_raw_parts;
 use crate::readers::traits::*;
-use std::ptr::slice_from_raw_parts;
 
 /// Cheap byte readers, which does not hold your hand. If you mess up, it will panic.
 ///
